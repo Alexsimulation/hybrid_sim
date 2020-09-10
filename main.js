@@ -63,9 +63,9 @@ export function get_results(L,ri,re,m_dot_ox,propellants,a,n) {
 
 // main script
 
-let ri = 0.2;
-let re = 0.3;
-let L = 1;
+let ri = 0.05;
+let re = 0.1;
+let L = 0.5;
 let m_dot_ox = 2;
 let propellants = 'N2O/Paraffin';
 
