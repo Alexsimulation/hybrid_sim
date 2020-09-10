@@ -31,3 +31,37 @@ body {
     background-color: rgba(0,0,0,0);
     color: white;
 }
+
+.button {
+    padding: 0.25rem 0.5rem;
+    border: 3px solid #fefefe;
+    border-radius: 7px solid;
+    color: #fefefe;
+    background: rgba(0,0,0,0.6);
+    text-transform: capitalize;
+    cursor: pointer;
+    outline: none;
+    width: 80%;
+}
+.button:hover{
+    background: rgb(0,0,0);
+}
+
+.field {
+    padding: 0.25rem 0.5rem;
+    border: 3px solid #fefefe;
+    border-radius: 7px solid;
+    color: #fefefe;
+    background: rgba(0,0,0,0.6);
+    text-transform: capitalize;
+    outline: none;
+    width: 140px;
+}
+.field:hover{
+    background: rgb(0,0,0);
+}
+
+.tablespaced { 
+    border-collapse:separate; 
+    border-spacing:0 5px; 
+} 

@@ -27,7 +27,8 @@ export function get_results(L,ri,re,m_dot_ox,propellants,a,n) {
     let radius_data = [];
     let thrust_data = [];
     let impulse_data = [];
-    
+    let of_data = [];
+
     let ind = 0;
 
     while ((r < re)&(ind <= 1000)) {
@@ -43,10 +44,11 @@ export function get_results(L,ri,re,m_dot_ox,propellants,a,n) {
         radius_data = radius_data.concat({x: t, y: r*100});
         thrust_data = thrust_data.concat({x: t, y: T/1000});
         impulse_data = impulse_data.concat({x: t, y: I/1000});
+        of_data = of_data.concat({x: t, y: of});
 
         ind = ind + 1;
     }
-    let values = [radius_data, thrust_data, impulse_data];
+    let values = [radius_data, thrust_data, impulse_data, of_data];
     return values;
 }
 
@@ -61,6 +63,6 @@ let propellants = 'N2O/Paraffin';
 let a = 0.001;
 let n = 0.7;
 
-let [radius_data, thrust_data, impulse_data] = get_results(L,ri,re,m_dot_ox,propellants,a,n);
+let [radius_data, thrust_data, impulse_data, of_data] = get_results(L,ri,re,m_dot_ox,propellants,a,n);
 
-export {radius_data, thrust_data, impulse_data}
+export {radius_data, thrust_data, impulse_data, of_data}

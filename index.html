@@ -20,8 +20,9 @@
 
         <script type="module">
             import { get_results } from "./main.js";
-            import {radius_data, thrust_data, impulse_data} from "./main.js";
+            import {radius_data, thrust_data, impulse_data, of_data} from "./main.js";
             Chart.defaults.global.defaultFontColor = 'white';
+            Chart.defaults.global.defaultFontSize = 15;
             let myChart = document.getElementById('myChart').getContext('2d');
             let RocketChart = new Chart(myChart, {
                 type:'scatter',
@@ -56,6 +57,16 @@
                         hidden: true,
                         showLine: true,
                         data: impulse_data
+                    } , {
+                        label:'O/F',
+                        fill: false,
+                        lineTension: 0.1,
+                        borderColor: "rgba(192,192,192,1)",
+                        pointRadius: 1,
+                        pointHitRaduis: 10,
+                        hidden: true,
+                        showLine: true,
+                        data: of_data
                     }]
                 },
                 options: {
@@ -130,9 +141,9 @@
         <div class="mydiv" align="right">
             <br>
             <form>
-                <table>
+                <table class="tablespaced">
                 <tr>
-                    <button align="left" type="button" id="but1" >Update Graph</button>
+                    <button class="button" align="left" type="button" id="but1" >Update Graph</button>
                 </tr>
                 <tr>
                     <td align="right">Advanced mode:&nbsp</td>
@@ -140,33 +151,33 @@
                 </tr>
                 <tr>
                     <td align="right">Grain Length (m):&nbsp</td>
-                    <td align="left"><input id = "gl_in" type="number" name="len_in" step = 0.1 value=1 /></td>
+                    <td align="left"><input class="field" id = "gl_in" type="number" name="len_in" step = 0.1 value=1 /></td>
                 </tr>
                 <tr>
                     <td align="right">Internal radius (m):&nbsp</td>
-                    <td align="left"><input id = "ri_in" type="number" name="ri_in" step = 0.1 value=0.2 /></td>
+                    <td align="left"><input class="field" id = "ri_in" type="number" name="ri_in" step = 0.1 value=0.2 /></td>
                 </tr>
                 <tr>
                     <td align="right">External radius (m):&nbsp</td>
-                    <td align="left"><input id = "re_in" type="number" name="re_in" step = 0.1 value=0.3 /></td>
+                    <td align="left"><input class="field" id = "re_in" type="number" name="re_in" step = 0.1 value=0.3 /></td>
                 </tr>
                 <tr>
                     <td align="right">Oxydant mass flow (kg/s):&nbsp</td>
-                    <td align="left"><input id = "mo_in" type="number" name="mox_in" step = 0.1 value=2 /></td>
+                    <td align="left"><input class="field" id = "mo_in" type="number" name="mox_in" step = 0.1 value=2 /></td>
                 </tr>
                 <tr>
                     <td align="right">Propellants:&nbsp</td>
-                    <td align="left"><select name="pr_in" id="pr_in" value="N2O/Paraffin">
+                    <td align="left"><select class="field" name="pr_in" id="pr_in" value="N2O/Paraffin">
                         <option value="N2O/Paraffin">N2O/Paraffin</option>
                     </select></td>
                 </tr>
                 <tr id="a_tr" style="display: none;" >
                     <td align="right">A:&nbsp</td>
-                    <td align="left"><input id = "a_in" type="number" name="a_in" step = 0.001 value=0.001 /></td>
+                    <td align="left"><input class="field" id = "a_in" type="number" name="a_in" step = 0.001 value=0.001 /></td>
                 </tr>
                 <tr id="n_tr" style="display: none;">
                     <td align="right">N:&nbsp</td>
-                    <td align="left"><input id = "n_in" type="number" name="n_in" step = 0.02 value=0.7 /></td>
+                    <td align="left"><input class="field" id = "n_in" type="number" name="n_in" step = 0.02 value=0.7 /></td>
                 </tr>
                 </table>
             </form>
