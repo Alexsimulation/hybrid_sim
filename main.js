@@ -12,8 +12,17 @@ function T_F(m1,m2,x1){
     let T_1 = (m1+m2)*ISP_F(x1)*9.81;
     return T_1;
 }
+function get_rho(fuels) {
+    let rho = 1000;
+    if (fuels == 'N2O/Paraffin') {
+        rho = 900;
+    } else if (fuels == 'NaN') {
+        rho = 1000;
+    }
+    return rho;
+}
 export function get_results(L,ri,re,m_dot_ox,propellants,a,n) {
-    let rho_fuel = 800;
+    let rho_fuel = get_rho(propellants);
     let t = 0;
     let dt = (re-ri)/(a*Math.pow((4*m_dot_ox/(Math.PI*Math.pow((re+ri),2))),n)*200);
     let Gox = m_dot_ox/(Math.PI*ri*ri);
@@ -45,7 +54,7 @@ export function get_results(L,ri,re,m_dot_ox,propellants,a,n) {
         thrust_data = thrust_data.concat({x: t, y: T/1000});
         impulse_data = impulse_data.concat({x: t, y: I/1000});
         of_data = of_data.concat({x: t, y: of});
-
+        
         ind = ind + 1;
     }
     let values = [radius_data, thrust_data, impulse_data, of_data];
@@ -60,8 +69,8 @@ let L = 1;
 let m_dot_ox = 2;
 let propellants = 'N2O/Paraffin';
 
-let a = 0.001;
-let n = 0.7;
+let a = 0.00015;
+let n = 0.5;
 
 let [radius_data, thrust_data, impulse_data, of_data] = get_results(L,ri,re,m_dot_ox,propellants,a,n);
 
