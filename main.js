@@ -1,5 +1,10 @@
-function ISP_F(x) {
-    let pns = [-0.0016, 0.0585, -0.8467, 6.0614, -23.0533, 58.0331, 179.7000];
+function ISP_F(x,props) {
+    let pns = [0, 0, 0, 0, 0, 0, 0];
+    if (props == 'N2O/Paraffin') {
+        pns = [-0.0016, 0.0585, -0.8467, 6.0614, -23.0533, 58.0331, 179.7000];
+    } else if (props == 'LOX/Paraffin') {
+        pns = [-0.0011, 0.0791, -1.8579, 20.4487, -114.4732, 296.5522, 69.1333];
+    }
     let ISP = 0;
     let i = pns.length;
     while (i >= 1) {
@@ -8,8 +13,8 @@ function ISP_F(x) {
     }
     return ISP;
 }
-function T_F(m1,m2,x1){
-    let T_1 = (m1+m2)*ISP_F(x1)*9.81;
+function T_F(m1,m2,x1,props){
+    let T_1 = (m1+m2)*ISP_F(x1,props)*9.81;
     return T_1;
 }
 function get_rho(fuels) {
@@ -30,7 +35,7 @@ export function get_results(L,ri,re,m_dot_ox,propellants,a,n) {
     let r_dot = a*Math.pow(Gox,n);
     let m_dot_fuel = rho_fuel*L*Math.PI*(2*r*r_dot + dt*dt*r_dot*r_dot);
     let of = m_dot_ox/m_dot_fuel;
-    let T = T_F(m_dot_ox,m_dot_fuel,of);
+    let T = T_F(m_dot_ox,m_dot_fuel,of,propellants);
     let I = 0;
 
     let radius_data = [];
@@ -46,7 +51,7 @@ export function get_results(L,ri,re,m_dot_ox,propellants,a,n) {
         r = r + r_dot*dt;
         m_dot_fuel = rho_fuel*L*Math.PI*(2*r*r_dot + dt*r_dot*r_dot);
         of = m_dot_ox/m_dot_fuel;
-        T = T_F(m_dot_ox,m_dot_fuel,of);
+        T = T_F(m_dot_ox,m_dot_fuel,of,propellants);
         I = I + T*dt;
         t = t + dt;
 

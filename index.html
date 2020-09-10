@@ -72,6 +72,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         xAxes: [{
                             scaleLabel: {
@@ -148,28 +149,29 @@
                 </tr>
                 <tr>
                     <td align="right">Advanced mode:&nbsp</td>
-                    <td align="left"><input id = "adv_in" type="checkbox" name="adv_in" /></td>
+                    <td align="left"><input class="checkmark" id = "adv_in" type="checkbox" name="adv_in" /></td>
                 </tr>
                 <tr>
                     <td align="right">Grain Length (m):&nbsp</td>
-                    <td align="left"><input class="field" id = "gl_in" type="number" name="len_in" step = 0.01 value=0.5 /></td>
+                    <td align="left"><input class="field" id = "gl_in" type="number" name="len_in" min=0.01 step = 0.01 value=0.5 /></td>
                 </tr>
                 <tr>
                     <td align="right">Internal radius (m):&nbsp</td>
-                    <td align="left"><input class="field" id = "ri_in" type="number" name="ri_in" step = 0.01 value=0.05 /></td>
+                    <td align="left"><input class="field" id = "ri_in" type="number" name="ri_in" min=0.005  step = 0.005 value=0.05 /></td>
                 </tr>
                 <tr>
                     <td align="right">External radius (m):&nbsp</td>
-                    <td align="left"><input class="field" id = "re_in" type="number" name="re_in" step = 0.01 value=0.1 /></td>
+                    <td align="left"><input class="field" id = "re_in" type="number" name="re_in" min=0.005  step = 0.005 value=0.1 /></td>
                 </tr>
                 <tr>
-                    <td align="right">Oxydant mass flow (kg/s):&nbsp</td>
-                    <td align="left"><input class="field" id = "mo_in" type="number" name="mox_in" step = 0.01 value=2 /></td>
+                    <td align="right">Oxidizer mass flux (kg/s):&nbsp</td>
+                    <td align="left"><input class="field" id = "mo_in" type="number" name="mox_in" min=0.01 step = 0.01 value=2 /></td>
                 </tr>
                 <tr>
                     <td align="right">Propellants:&nbsp</td>
                     <td align="left"><select class="field" name="pr_in" id="pr_in" value="N2O/Paraffin">
                         <option value="N2O/Paraffin">N2O/Paraffin</option>
+                        <option value="LOX/Paraffin">LOX/Paraffin</option>
                     </select></td>
                 </tr>
                 <tr id="a_tr" style="display: none;" >

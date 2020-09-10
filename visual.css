@@ -6,6 +6,7 @@ body {
 .mycontainer {
     position: absolute;
     width: 65%;
+    height: 80%;
     top: 8%;
     margin: 1%;
     background-color: rgba(0,0,0,0);
@@ -15,11 +16,13 @@ body {
 .myheader {
     position: absolute;
     width: 100%;
+    height: 8%;
     margin: 0px;
     top: 0px;
     background-color: #A52A2A;
     color: white;
     font-size: 40px;
+    font-size: 5vh;
 }
 
 .mydiv {
@@ -65,3 +68,27 @@ body {
     border-collapse:separate; 
     border-spacing:0 5px; 
 } 
+
+/*Checkbox edit*/
+.checkmark {
+    -webkit-appearance: none;
+	background-color: #fafafa;
+	border: 10px solid #cacece;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+	padding: 9px;
+	border-radius: 3px;
+	display: inline-block;
+	position: relative;
+}
+.checkmark:active, .checkmark:checked:active {
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+.checkmark:checked {
+	background-color: #A52A2A;
+	border: 10px solid #adb8c0;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+	border-color: #A52A2A;
+}
+.checkmark:checked:after {
+    border-color: #A52A2A;
+}
