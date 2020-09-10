@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie-edge">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+        <script type="module" src="main.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="visual.css"></link>
+        <title>Hybrid Rocket</title>
+    </head>
+    <body>
+        <div class="myheader">
+            &nbsp hybrid_sim
+        </div>
+        <div class="mycontainer">
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <script type="module">
+            import { get_results } from "./main.js";
+            import {radius_data, thrust_data, impulse_data} from "./main.js";
+            Chart.defaults.global.defaultFontColor = 'white';
+            let myChart = document.getElementById('myChart').getContext('2d');
+            let RocketChart = new Chart(myChart, {
+                type:'scatter',
+                data:{
+                    datasets:[
+                    {
+                        label:'Radius (cm)',
+                        fill: false,
+                        lineTension: 0.1,
+                        borderColor: "rgba(0,200,90,1)",
+                        pointRadius: 1,
+                        pointHitRaduis: 10,
+                        hidden: true,
+                        showLine: true,
+                        data: radius_data
+                    } , {
+                        label:'Thrust (kN)',
+                        fill: false,
+                        lineTension: 0.1,
+                        borderColor: "rgba(204,0,0,1)",
+                        pointRadius: 1,
+                        pointHitRaduis: 10,
+                        showLine: true,
+                        data: thrust_data
+                    } , {
+                        label:'Impulse (kN.s)',
+                        fill: false,
+                        lineTension: 0.1,
+                        borderColor: "rgba(75,192,192,1)",
+                        pointRadius: 1,
+                        pointHitRaduis: 10,
+                        hidden: true,
+                        showLine: true,
+                        data: impulse_data
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Time (s)',
+                                fontColor:'white'
+                            },
+                            ticks: {
+                               fontColor: "white"
+                            },
+                            gridLines: { 
+                                color: "#6e6e6e" 
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                               fontColor: "white"
+                            },
+                            gridLines: { 
+                                color: "#6e6e6e" 
+                            }
+                        }]
+                    }
+                }
+            });
+
+            function addData(chart, label, data) {
+                chart.data.labels.push(label);
+                chart.data.datasets.forEach((dataset) => {
+                    dataset.data.push(data);
+                });
+                chart.update();
+            }
+
+            function removeData(chart) {
+                chart.data.labels.pop();
+                chart.data.datasets.forEach((dataset) => {
+                    dataset.data.pop();
+                });
+                chart.update();
+            }
+
+            function update_graph() {
+                //Graph.data.datasets.data = radius_data;
+                //Graph.update();
+                let ri = parseFloat(document.getElementById("ri_in").value);
+                let re = parseFloat(document.getElementById("re_in").value);
+                let L = parseFloat(document.getElementById("gl_in").value);
+                let m_dot_ox = parseFloat(document.getElementById("mo_in").value);
+                let propellants = document.getElementById("pr_in").value;
+                let a = parseFloat(document.getElementById("a_in").value);
+                let n = parseFloat(document.getElementById("n_in").value);
+                let res = get_results(L,ri,re,m_dot_ox,propellants,a,n);
+                let i;
+                for (i = 0; i < RocketChart.data.datasets.length; i++) {
+                    RocketChart.data.datasets[i].data = res[i];
+                }
+
+                RocketChart.update();
+            }
+
+            let q1 = document.getElementById("but1");
+            if (q1) {
+                q1.addEventListener("click",update_graph);
+            }
+        </script>
+
+        <div class="mydiv" align="right">
+            <br>
+            <form>
+                <table>
+                <tr>
+                    <button align="left" type="button" id="but1" >Update Graph</button>
+                </tr>
+                <tr>
+                    <td align="right">Advanced mode:&nbsp</td>
+                    <td align="left"><input id = "adv_in" type="checkbox" name="adv_in" /></td>
+                </tr>
+                <tr>
+                    <td align="right">Grain Length (m):&nbsp</td>
+                    <td align="left"><input id = "gl_in" type="number" name="len_in" step = 0.1 value=1 /></td>
+                </tr>
+                <tr>
+                    <td align="right">Internal radius (m):&nbsp</td>
+                    <td align="left"><input id = "ri_in" type="number" name="ri_in" step = 0.1 value=0.2 /></td>
+                </tr>
+                <tr>
+                    <td align="right">External radius (m):&nbsp</td>
+                    <td align="left"><input id = "re_in" type="number" name="re_in" step = 0.1 value=0.3 /></td>
+                </tr>
+                <tr>
+                    <td align="right">Oxydant mass flow (kg/s):&nbsp</td>
+                    <td align="left"><input id = "mo_in" type="number" name="mox_in" step = 0.1 value=2 /></td>
+                </tr>
+                <tr>
+                    <td align="right">Propellants:&nbsp</td>
+                    <td align="left"><select name="pr_in" id="pr_in" value="N2O/Paraffin">
+                        <option value="N2O/Paraffin">N2O/Paraffin</option>
+                    </select></td>
+                </tr>
+                <tr id="a_tr" style="display: none;" >
+                    <td align="right">A:&nbsp</td>
+                    <td align="left"><input id = "a_in" type="number" name="a_in" step = 0.001 value=0.001 /></td>
+                </tr>
+                <tr id="n_tr" style="display: none;">
+                    <td align="right">N:&nbsp</td>
+                    <td align="left"><input id = "n_in" type="number" name="n_in" step = 0.02 value=0.7 /></td>
+                </tr>
+                </table>
+            </form>
+            <br>
+        </div>
+
+        <script>
+            function advanced_form() {
+                let i = q2.checked;
+                if (i == true) {
+                    document.getElementById("a_tr").style.display = 'table-row';
+                    document.getElementById("n_tr").style.display = 'table-row';
+                } else {
+                    document.getElementById("a_tr").style.display = 'none';
+                    document.getElementById("n_tr").style.display = 'none';
+                }
+            }
+            q2 = document.getElementById("adv_in");
+            if (q2) {
+                q2.addEventListener('click',advanced_form);
+            }
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,33 @@
+body {
+    background-color: black;
+}
+  
+
+.mycontainer {
+    position: absolute;
+    width: 65%;
+    top: 8%;
+    margin: 1%;
+    background-color: rgba(0,0,0,0);
+    color: white;
+}
+
+.myheader {
+    position: absolute;
+    width: 100%;
+    margin: 0px;
+    top: 0px;
+    background-color: #A52A2A;
+    color: white;
+    font-size: 40px;
+}
+
+.mydiv {
+    position: absolute;
+    width: 25%;
+    top: 8%;
+    right: 5%;
+    margin: 1%;
+    background-color: rgba(0,0,0,0);
+    color: white;
+}
