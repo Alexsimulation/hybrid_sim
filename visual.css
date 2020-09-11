@@ -3,14 +3,23 @@ body {
 }
   
 
-.mycontainer {
+.mygraphcontainer {
     position: relative;
-    width: 70%;
     height: 80vh;
-    top: 10vh;
+    max-width: 100%;
+    min-width: 60%;
     margin: 2%;
     background-color: rgba(0,0,0,0);
     color: white;
+}
+
+.mylargecontainer {
+    position: relative;
+    top: 8vh;
+    color: white;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
 }
 
 .myheader {
@@ -24,13 +33,13 @@ body {
     font-size: 40px;
     font-size: 5vh;
     Z-index: 2;
+    overflow: hidden;
 }
 
 .myform {
     position: relative;
-    width: 25%;
-    bottom: 60vh;
-    left: 70%;
+    width: 300px;
+    top: 10px;
     margin: 1%;
     background-color: rgba(0,0,0,0);
     color: white;
@@ -38,52 +47,49 @@ body {
 
 .myfirstskip {
     position: relative;
-    top: -30vh;
+    top: 50px;
     width: 100%;
     height: 8vh;
     background-color: rgba(120,0,0,1);
+    overflow: hidden;
 }
 
 .imagecontainer {
     position: relative;
-    top: -30vh;
     width: 90%;
     height: 60%;
     margin: 5%;
     color: white;
     display: flex;
-    flex-flow: row wrap
+    flex-flow: row wrap;
 }
 
 .imagetext {
     position: relative;
     height: 100%;
     width: 500px;
-    margin-right:25px;
+    margin-right: 25px;
     text-align: justify;
 }
 
 .image {
-    position: relative;
-    display: block;
-    margin-left: 0px;
-    margin-right: auto;
-    width: 90vh;
-    height: 40vh;
-  }
+    float: right;
+    height: auto;
+    max-width: 60%;
+    min-width: 30%;
+}
 
 .myskip {
     position: relative;
-    top: -30vh;
     width: 100%;
     height: 8vh;
     background-color: rgba(120,0,0,1);
+    overflow: hidden;
 }
 
 .myparagraph {
     position: relative;
     width: 90%;
-    top: -30vh;
     background-color: rgba(0,0,0,0);
     color: white;
     margin: 5%;
@@ -196,3 +202,14 @@ a {
 a:hover {
     color: rgb(243, 102, 102);
   }
+
+
+/* Edit size if small width */
+
+@media only screen and (max-width: 1000px) {
+    .image {
+        height: auto;
+        max-width: 500px;
+        min-width: 500px;
+    }
+}
