@@ -4,50 +4,90 @@ body {
   
 
 .mycontainer {
-    position: absolute;
-    width: 65%;
-    height: 80%;
-    top: 8%;
-    margin: 1%;
+    position: relative;
+    width: 70%;
+    height: 80vh;
+    top: 10vh;
+    margin: 2%;
     background-color: rgba(0,0,0,0);
     color: white;
 }
 
 .myheader {
-    position: absolute;
+    position: fixed;
     width: 100%;
-    height: 8%;
+    height: 8vh;
     margin: 0px;
     top: 0px;
     background-color: #A52A2A;
     color: white;
     font-size: 40px;
     font-size: 5vh;
+    Z-index: 2;
 }
 
-.mydiv {
-    position: absolute;
+.myform {
+    position: relative;
     width: 25%;
-    top: 8%;
-    right: 5%;
+    bottom: 60vh;
+    left: 70%;
     margin: 1%;
     background-color: rgba(0,0,0,0);
     color: white;
 }
 
-.button {
-    padding: 0.25rem 0.5rem;
-    border: 3px solid #fefefe;
-    border-radius: 7px solid;
-    color: #fefefe;
-    background: rgba(0,0,0,0.6);
-    text-transform: capitalize;
-    cursor: pointer;
-    outline: none;
-    width: 80%;
+.myfirstskip {
+    position: relative;
+    top: -30vh;
+    width: 100%;
+    height: 8vh;
+    background-color: rgba(120,0,0,1);
 }
-.button:hover{
-    background: rgb(0,0,0);
+
+.imagecontainer {
+    position: relative;
+    top: -30vh;
+    width: 90%;
+    height: 60%;
+    margin: 5%;
+    color: white;
+    display: flex;
+    flex-flow: row wrap
+}
+
+.imagetext {
+    position: relative;
+    height: 100%;
+    width: 500px;
+    margin-right:25px;
+    text-align: justify;
+}
+
+.image {
+    position: relative;
+    display: block;
+    margin-left: 0px;
+    margin-right: auto;
+    width: 90vh;
+    height: 40vh;
+  }
+
+.myskip {
+    position: relative;
+    top: -30vh;
+    width: 100%;
+    height: 8vh;
+    background-color: rgba(120,0,0,1);
+}
+
+.myparagraph {
+    position: relative;
+    width: 90%;
+    top: -30vh;
+    background-color: rgba(0,0,0,0);
+    color: white;
+    margin: 5%;
+    text-align: justify;
 }
 
 .field {
@@ -69,14 +109,28 @@ body {
     border-spacing:0 5px; 
 } 
 
-/*Checkbox edit*/
+.button {
+    padding: 0.25rem 0.5rem;
+    border: 3px solid #fefefe;
+    border-radius: 7px solid;
+    color: #fefefe;
+    background: rgba(0,0,0,0.6);
+    text-transform: capitalize;
+    cursor: pointer;
+    outline: none;
+    width: 80%;
+}
+.button:hover{
+    background: rgb(0,0,0);
+}
+
 .checkmark {
     -webkit-appearance: none;
-	background-color: #fafafa;
-	border: 10px solid #cacece;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+    background: rgba(0,0,0,0.6);
+    border: 10px solid rgba(100,100,100,0);
+    outline: 2px solid rgba(255,255,255,1);
+    border-radius: 3px;
 	padding: 9px;
-	border-radius: 3px;
 	display: inline-block;
 	position: relative;
 }
@@ -92,3 +146,53 @@ body {
 .checkmark:checked:after {
     border-color: #A52A2A;
 }
+
+pre code {
+    background-color: rgba(255,255,255,0.1);
+    height: 30vh;
+    border: 1px solid #999;
+    display: block;
+    padding: 20px;
+    color: rgb(255, 255, 255);
+    overflow-x: scroll;
+    overflow-y: scroll;
+    resize: vertical;
+  }
+
+  /* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  ::-webkit-resizer {
+    border: 1px solid rgba(100,100,100,1);
+    background: rgba(48, 48, 48, 1);
+
+    /*size does not work*/  
+    display:block;  
+    width: 150px !important;
+    height: 150px !important;
+}
+
+a {
+    color: rgb(243, 102, 102);
+}
+
+a:hover {
+    color: rgb(243, 102, 102);
+  }
