@@ -1,26 +1,6 @@
 body {
     background-color: black;
 }
-  
-
-.mygraphcontainer {
-    position: relative;
-    height: 80vh;
-    max-width: 100%;
-    min-width: 60%;
-    margin: 2%;
-    background-color: rgba(0,0,0,0);
-    color: white;
-}
-
-.mylargecontainer {
-    position: relative;
-    top: 8vh;
-    color: white;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-}
 
 .myheader {
     position: fixed;
@@ -36,9 +16,28 @@ body {
     overflow: hidden;
 }
 
+.mylargecontainer {
+    position: relative;
+    top: 8vh;
+    color: white;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.mygraphcontainer {
+    position: relative;
+    height: 80vh;
+    max-width: 100%;
+    min-width: 60%;
+    margin: 2%;
+    background-color: rgba(0,0,0,0);
+    color: white;
+}
+
 .myform {
     position: relative;
-    width: 300px;
+    width: 350px;
     top: 10px;
     margin: 1%;
     background-color: rgba(0,0,0,0);
@@ -67,16 +66,16 @@ body {
 .imagetext {
     position: relative;
     height: 100%;
-    width: 500px;
+    width: 35vw;
     margin-right: 25px;
     text-align: justify;
 }
 
 .image {
     float: right;
-    height: auto;
-    max-width: 60%;
-    min-width: 30%;
+    height: 20vw;
+    width: 50vw;
+    align-self: center;
 }
 
 .myskip {
@@ -201,15 +200,23 @@ a {
 
 a:hover {
     color: rgb(243, 102, 102);
-  }
+}
+
 
 
 /* Edit size if small width */
 
 @media only screen and (max-width: 1000px) {
+    .imagetext {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        margin-right: 25px;
+        text-align: justify;
+    }
     .image {
         height: auto;
-        max-width: 500px;
-        min-width: 500px;
+        max-width: 100%;
+        min-width: 100%;
     }
 }

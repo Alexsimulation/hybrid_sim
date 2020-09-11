@@ -131,8 +131,6 @@
                 }
 
                 function update_graph() {
-                    //Graph.data.datasets.data = radius_data;
-                    //Graph.update();
                     let ri = parseFloat(document.getElementById("ri_in").value);
                     let re = parseFloat(document.getElementById("re_in").value);
                     let L = parseFloat(document.getElementById("gl_in").value);
@@ -192,11 +190,11 @@
                         <td align="left"><input class="checkmark" id = "adv_in" type="checkbox" name="adv_in" /></td>
                     </tr>
                     <tr id="a_tr" style="display: none;" >
-                        <td align="right">A:&nbsp</td>
+                        <td align="right">\(a\)&nbsp:&nbsp</td>
                         <td align="left"><input class="field" id = "a_in" type="number" name="a_in" step = 0.000025 value=0.00015 /></td>
                     </tr>
                     <tr id="n_tr" style="display: none;">
-                        <td align="right">N:&nbsp</td>
+                        <td align="right">\(n\)&nbsp:&nbsp</td>
                         <td align="left"><input class="field" id = "n_in" type="number" name="n_in" step = 0.01 value=0.5 /></td>
                     </tr>
                     </table>
