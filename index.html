@@ -1,312 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie-edge">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-        <script type="module" src="main.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></link>
-        <link rel="stylesheet" href="visual.css"></link>
+        <link rel="stylesheet" href="homevisuals.css"></link>
         <link rel="shortcut icon" type="image/x-icon" href="fire.ico">
-        <title>hybrid_sim</title>
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <title>hybrid_sim.home</title>
     </head>
+
     <body>
-        <div class="myheader">
-            &nbsp hybrid_sim
-        </div>
 
-        <div class="mylargecontainer">
-
-            <div class="mygraphcontainer">
-                <canvas id="myChart"></canvas>
+        <form onsubmit="redirect_function(); return false">
+            <div class="myheader">
+                &nbsp <label for="activepage">hybrid_sim.&nbsp</label>
+                    <input list="activepage" class="pageselector" name="pageselector" id="pageselector" value="home"/>
+                    <datalist id="activepage">
+                        <option value="home"></option>
+                        <option value="burn"></option>
+                        <option value="nozzle"></option>
+                    </datalist>
             </div>
-
-            <script type="module">
-                import { get_results } from "./main.js";
-                import {radius_data, thrust_data, impulse_data, of_data, ISP_data} from "./main.js";
-                Chart.defaults.global.defaultFontColor = 'white';
-                Chart.defaults.global.defaultFontSize = 15;
-                let myChart = document.getElementById('myChart').getContext('2d');
-                let RocketChart = new Chart(myChart, {
-                    type:'scatter',
-                    data:{
-                        datasets:[
-                        {
-                            label:'Radius (cm)',
-                            fill: false,
-                            lineTension: 0.1,
-                            borderColor: "rgba(0,200,90,1)",
-                            pointRadius: 1,
-                            pointHitRaduis: 10,
-                            hidden: true,
-                            showLine: true,
-                            data: radius_data
-                        } , {
-                            label:'Thrust (kN)',
-                            fill: false,
-                            lineTension: 0.1,
-                            borderColor: "rgba(204,0,0,1)",
-                            pointRadius: 1,
-                            pointHitRaduis: 10,
-                            showLine: true,
-                            data: thrust_data
-                        } , {
-                            label:'Impulse (kN.s)',
-                            fill: false,
-                            lineTension: 0.1,
-                            borderColor: "rgba(75,192,192,1)",
-                            pointRadius: 1,
-                            pointHitRaduis: 10,
-                            hidden: true,
-                            showLine: true,
-                            data: impulse_data
-                        } , {
-                            label:'O/F',
-                            fill: false,
-                            lineTension: 0.1,
-                            borderColor: "rgba(192,192,192,1)",
-                            pointRadius: 1,
-                            pointHitRaduis: 10,
-                            hidden: true,
-                            showLine: true,
-                            data: of_data
-                        } , {
-                            label:'ISP (s)',
-                            fill: false,
-                            lineTension: 0.1,
-                            borderColor: "rgba(192,192,0,1)",
-                            pointRadius: 1,
-                            pointHitRaduis: 10,
-                            hidden: true,
-                            showLine: true,
-                            data: ISP_data
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            xAxes: [{
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Time (s)',
-                                    fontColor:'white'
-                                },
-                                ticks: {
-                                fontColor: "white"
-                                },
-                                gridLines: { 
-                                    color: "#6e6e6e" 
-                                }
-                            }],
-                            yAxes: [{
-                                ticks: {
-                                fontColor: "white"
-                                },
-                                gridLines: { 
-                                    color: "#6e6e6e" 
-                                }
-                            }]
-                        }
-                    }
-                });
-
-                function addData(chart, label, data) {
-                    chart.data.labels.push(label);
-                    chart.data.datasets.forEach((dataset) => {
-                        dataset.data.push(data);
-                    });
-                    chart.update();
-                }
-
-                function removeData(chart) {
-                    chart.data.labels.pop();
-                    chart.data.datasets.forEach((dataset) => {
-                        dataset.data.pop();
-                    });
-                    chart.update();
-                }
-
-                function update_graph() {
-                    let ri = parseFloat(document.getElementById("ri_in").value);
-                    let re = parseFloat(document.getElementById("re_in").value);
-                    let L = parseFloat(document.getElementById("gl_in").value);
-                    let m_dot_ox = parseFloat(document.getElementById("mo_in").value);
-                    let propellants = document.getElementById("pr_in").value;
-                    let a = parseFloat(document.getElementById("a_in").value);
-                    let n = parseFloat(document.getElementById("n_in").value);
-                    let res = get_results(L,ri,re,m_dot_ox,propellants,a,n);
-                    let i;
-                    for (i = 0; i < RocketChart.data.datasets.length; i++) {
-                        RocketChart.data.datasets[i].data = res[i];
-                    }
-
-                    RocketChart.update();
-                }
-
-                let q1 = document.getElementById("but1");
-                if (q1) {
-                    q1.addEventListener("click",update_graph);
-                }
-            </script>
-
-            <div class="myform" align="right">
-                <br>
-                <form>
-                    <table class="tablespaced">
-                    <tr>
-                        <button class="button" align="left" type="button" id="but1" >Update Graph</button>
-                    </tr>
-                    <tr>
-                        <td align="right">Grain length (m):&nbsp</td>
-                        <td align="left"><input class="field" id = "gl_in" type="number" name="len_in" min=0.01 step = 0.01 value=0.5 /></td>
-                    </tr>
-                    <tr>
-                        <td align="right">Internal radius (m):&nbsp</td>
-                        <td align="left"><input class="field" id = "ri_in" type="number" name="ri_in" min=0.005  step = 0.005 value=0.05 /></td>
-                    </tr>
-                    <tr>
-                        <td align="right">External radius (m):&nbsp</td>
-                        <td align="left"><input class="field" id = "re_in" type="number" name="re_in" min=0.005  step = 0.005 value=0.1 /></td>
-                    </tr>
-                    <tr>
-                        <td align="right">Oxidizer mass flux (kg/s):&nbsp</td>
-                        <td align="left"><input class="field" id = "mo_in" type="number" name="mox_in" min=0.01 step = 0.01 value=2 /></td>
-                    </tr>
-                    <tr>
-                        <td align="right">Propellants:&nbsp</td>
-                        <td align="left"><select class="field" name="pr_in" id="pr_in" value="N2O/Paraffin">
-                            <option value="N2O/Paraffin">N2O/Paraffin</option>
-                            <option value="LOX/Paraffin">LOX/Paraffin</option>
-                            <option value="N2O/PMMA">N2O/PMMA</option>
-                            <option value="LOX/PMMA">LOX/PMMA</option>
-                        </select></td>
-                    </tr>
-                    <tr>
-                        <td align="right">Advanced mode:&nbsp</td>
-                        <td align="left"><input class="checkmark" id = "adv_in" type="checkbox" name="adv_in" /></td>
-                    </tr>
-                    <tr id="a_tr" style="display: none;" >
-                        <td align="right">\(a\)&nbsp:&nbsp</td>
-                        <td align="left"><input class="field" id = "a_in" type="number" name="a_in" step = 0.000025 value=0.00015 /></td>
-                    </tr>
-                    <tr id="n_tr" style="display: none;">
-                        <td align="right">\(n\)&nbsp:&nbsp</td>
-                        <td align="left"><input class="field" id = "n_in" type="number" name="n_in" step = 0.01 value=0.5 /></td>
-                    </tr>
-                    </table>
-                </form>
-                <br>
-            </div>
-        </div>
+        </form>
 
         <script>
-            function advanced_form() {
-                let i = q2.checked;
-                if (i == true) {
-                    document.getElementById("a_tr").style.display = 'table-row';
-                    document.getElementById("n_tr").style.display = 'table-row';
-                } else {
-                    document.getElementById("a_tr").style.display = 'none';
-                    document.getElementById("n_tr").style.display = 'none';
+            function redirect_function() {
+                id_red = document.getElementById("pageselector").value;
+                if (id_red == "burn") {
+                    window.location.href = "https://alexsimulation.github.io/hybrid_sim/burn.html";
+                } else if (id_red == "nozzle") {
+                    
                 }
-            }
-            q2 = document.getElementById("adv_in");
-            if (q2) {
-                q2.addEventListener('click',advanced_form);
             }
         </script>
 
-        <div class="myfirstskip"></div>
+        <div class="firstheader">
+            <h1>
+                Quick Navigation
+            </h1>
+        </div>
 
-        <div class="imagecontainer">
-            <div class="imagetext">
-                <br><br>
-                <h1>
-                    Inputs explained
-                </h1>
-                The graph inputs are critical design parameters of the hybrid rocket motor. The grain length is the length of the whole solid fuel
-                cylinder. The radius of its opening is the internal radius, while the radius of the outside envelope is the external radius. The 
-                oxidizer mass flux is a measurement of the rate at which the oxidizer enters the combustion chamber. It depends on different factors 
-                like the injector geometry, the tank pressure and the chamber pressure. In advanced mode, it is possible to edit \(a\) and \(n\),
-                factors used in calculating how fast the solid fuel is burned. The equation involving these factors is explained in the section 
-                <a href="#HowItWorks">How it works</a> below.
+        <div class="blockscontainer">
+
+            <div class="gotoburn" id="burnbutton">
+                <div class="buttontext">
+                    <h1>.burn</h1><br>
+                    Simulates a motor burn. Enter grain geometry and oxidizer mass flux, get the burn's thrust profile and many other 
+                    parameters.
+                </div>
             </div>
-            <img src="motor_drawing.PNG" alt="Motor Measurements" class="image">
+            <div class="gotonozzle" id="nozzlebutton">
+                <div class="buttontext">
+                    <h1>.nozzle</h1><br>
+                    Simulates the exhaust flow through the nozzle. Enter nozzle geometry and chamber parameters, get the nozzle's exit pressure 
+                    and many other parameters.
+                </div>
+            </div>
+
         </div>
 
-        <a id="HowItWorks">
-            <div class="myskip"></div>
-        </a>
+        <script>
+            var el = document.getElementById('burnbutton');
+            var e2 = document.getElementById('nozzlebutton');
+
+            el.onclick = function() {
+                window.location.href = "https://alexsimulation.github.io/hybrid_sim/index.html";
+            };
+            e2.onclick = function() {
+                console.log('Click just happened on nozzle')
+            }
+        </script>
+
+        <div class="firstheader" style="top: 0px">
+            <strong>Tip:</strong> You can also navigate via the <i>hybrid_sim.###</i> bar on top, simply replace the <i>###</i> with the page 
+            you want to go to and press <i>ENTER</i>. Per example, typing <i>hybrid_sim.burn</i> gets you to the <i>.burn</i> page, and then 
+            typing <i>hybrid_sim.home</i> gets you back to this page.
+        </div>
+
+        <div class="myskip"></div>
 
         <div class="myparagraph">
             <h1>
-                How it works
+                Hybrid Rocket Motor
             </h1>
-            This simulator uses the equation \(\dot{r} = a(G_{ox})^n\) to approximate the fuel grain regression rate, where \(a\) and \(n\) 
-            are empirical constants, and \(G_{ox}=\dot{m_{ox}}/(\pi r^2)\). The thrust is approximated using \(T=\dot{m} \cdot ISP \cdot g\), 
-            the specific impulse being a function of the oxidizer to fuel ratio \(ISP = f(O/F)\) taken from tables, and \(\dot{m}\) being the 
-            total propellants mass flow. The fuel mass flow is given by the equation \(\dot{m_f} = \rho_f \cdot \pi \cdot L \left(2r\dot{r}+
-            {dt}^2\dot{r}^2\right)\). Those relations are then used to integrate the radius and the impulse over the burn, with \(r_{(t)}=
-            r_0+\int_0^t \dot{r}dt\) and \(I_{(t)}=\int_0^tTdt\).
+            Here's an generic hybrid rocket motor. You can hover on parts of the motor to get information on them.
         </div>
 
-
-        <div class="myparagraph">
-            <h1>
-                Code example
-            </h1>
-            To illustrate the explanation above, here is the important part of the javascript code that returns the data displayed in the chart.
-
-            <pre>
-                <code>
-                    // Some parameters are initialized above this part of the script
-
-                    // Initializing data storage
-                    let radius_data = [];
-                    let thrust_data = [];
-                    let impulse_data = [];
-                    let of_data = [];
-
-                    // Main simulation loop
-                    while (r < re) {
-
-                        // Computing parameters
-                        Gox = m_dot_ox/(Math.PI*r*r);
-                        r_dot = a*Math.pow(Gox,n);
-                        m_dot_fuel = rho_fuel*L*Math.PI*(2*r*r_dot + dt*r_dot*r_dot);
-                        of = m_dot_ox/m_dot_fuel;
-                        T = (m_dot_ox+m_dot_fuel)*ISP_F(of,propellants)*9.81;
-
-                        // Numerical integrations
-                        r = r + r_dot*dt;
-                        I = I + T*dt;
-                        t = t + dt;
-                        
-                        // Storing results at time = t
-                        radius_data = radius_data.concat({x: t, y: r*100});
-                        thrust_data = thrust_data.concat({x: t, y: T/1000});
-                        impulse_data = impulse_data.concat({x: t, y: I/1000});
-                        of_data = of_data.concat({x: t, y: of});
-                    }
-
-                    // Simulation done, return values
-                    let values = [radius_data, thrust_data, impulse_data, of_data];
-                    return values;
-                </code>
-              </pre>
+        <div class="diagramcontainer">
+            <img src="motor_render.PNG" alt="Motor schema" class="image">
+            <div class="containerdiv">
+                <div class="tankdiv">
+                    <h1>Oxidizer tank</h1>
+                    Contains and pressurizes the oxidizer.
+                </div>
+                <div class="valvediv">
+                    <h1>Valve</h1>
+                    Controls the oxidizer mass flow to the engine.
+                </div>
+                <div class="injectordiv">
+                    <h1>Injector</h1>
+                    Vaporizes the oxidizer for better mixing.
+                </div>
+                <div class="graindiv">
+                    <h1>Grain</h1>
+                    Solid fuel, burns with the oxidizer.
+                </div>
+                <div class="nozzlediv">
+                    <h1>Nozzle</h1>
+                    Expands the gases to generate thrust.
+                </div>
+            </div>
         </div>
+
+        <div class="myskip"></div>
 
         <div class="myparagraph">
             <h1>Learn more</h1>
-            For more information about the code used on this page, the source code is available 
-            <a href="https://github.com/Alexsimulation/hybrid_sim" target="_blank">here</a>.
-            To design hybrid rocket motors, or rocket motors in general, <a href="https://www.grc.nasa.gov/www/CEAWeb/" target="_blank">CEA</a>
-            , an online tool by NASA, is a must.
+            A good exercise is to try to design a motor by yourself. Try using the other pages on this website to help you test your design 
+            parameters. To help you in this process, you can use NASA's <a href="https://www.grc.nasa.gov/www/CEAWeb/" target="_blank">CEA</a>,
+            a chemical reaction simulator applied to rocket design.
+        </div>
+
+        <div class="end">
+            <strong>Contact: </strong><a href = "mailto: alexis.angers@polymtl.ca">alexis.angers@polymtl.ca</a><br>
+            <strong>Source code: </strong><a href = "https://github.com/Alexsimulation/hybrid_sim">github.com/Alexsimulation/hybrid_sim</a><br>
+
         </div>
 
     </body>
+
 </html>

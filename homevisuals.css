@@ -1,0 +1,318 @@
+body {
+    background-color: black;
+}
+
+.myheader {
+    position: fixed;
+    width: 100%;
+    height: 8vh;
+    margin: 0px;
+    top: 0px;
+    background-color: rgba(80,80,80,1);
+    color: white;
+    font-size: 40px;
+    font-size: 5vh;
+    Z-index: 2;
+    overflow: hidden;
+}
+
+.pageselector {
+    position: relative;
+    left:-3vh;
+    height: 80%;
+    width: 30vh;
+    background-color: rgba(0,0,0,0);
+    color: white;
+    border:0px solid #ccc;
+    align-self: center;
+}
+.pageselector:hover {
+    background-color: rgba(50,50,50,1);
+}
+.pageselector:focus {
+    border:0px solid #ccc; 
+    background-color: rgba(50,50,50,1);
+    outline: none;
+}
+
+.firstheader {
+    position: relative;
+    top: 8vh;
+    color: white;
+    background-color: none;
+    margin: 3vh;
+    margin-left: 5%;
+}
+
+.blockscontainer {
+    position: relative;
+    top: 4vh;
+    width: 95%;
+    margin-left: 3%;
+    height: auto;
+    background-color: rgba(0,0,0,0);
+    display: flex;
+}
+
+.gotoburn {
+    width: 20%;
+    height: auto;
+    margin: 2%;
+    background-color: rgba(120,0,0,1);
+    flex-grow: 1;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+.gotoburn:hover {
+    background-color: rgba(80,0,0,1);
+    cursor: pointer;
+}
+
+.gotonozzle {
+    width: 20%;
+    height: auto;
+    margin: 2%;
+    background-color: rgb(120, 34, 0);
+    flex-grow: 1;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+.gotonozzle:hover {
+    background-color: rgba(80,15,0,1);
+    cursor: pointer;
+}
+
+.buttontext {
+    width: 80%;
+    height: 80%;
+    color: white;
+    background-color: rgba(0,0,0,0);
+    text-align: justify;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.myskip {
+    position: relative;
+    width: 100%;
+    height: 8vh;
+    top: 4vh;
+    background-color: rgba(70,70,70,1);
+    overflow: hidden;
+}
+
+.myparagraph {
+    position: relative;
+    width: 90%;
+    background-color: rgba(0,0,0,0);
+    color: white;
+    margin: 5%;
+    text-align: justify;
+}
+
+.diagramcontainer {
+    position: relative;
+    left: -15vw;
+    height: 1300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: transparent;
+}
+
+.image {
+    position: relative;
+    width: 800px;
+    border-radius: 50px;
+    background: transparent;
+}
+
+.containerdiv {
+    position: relative;
+    width: 100px;
+    height: 10px;
+    background: transparent;
+}
+
+.tankdiv {
+    position: relative;
+    bottom: 1230px;
+    left: 0px;
+    width: 120px;
+    height: 360px;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    color: rgba(0,0,0,0);
+    font-size: 15px;
+}
+.tankdiv:hover {
+    background-color: rgba(0,0,0,0);
+    background-image: linear-gradient(90deg,
+        rgba(0,0,0,0),
+        rgba(40,40,40,1));
+    width: 50vw;
+    left: 100px;
+    color: white;
+    padding-left: 10vw;
+    padding-top: 3vh;
+}
+
+.valvediv {
+    position: relative;
+    bottom: 1230px;
+    left: 0px;
+    width: 120px;
+    height: 170px;
+    background-color: rgba(0,0,0,0);
+    border-radius: 10px;
+    color: rgba(0,0,0,0);
+    font-size: 15px;
+}
+.valvediv:hover {
+    background-color: rgba(0,0,0,0);
+    background-image: linear-gradient(90deg,
+        rgba(0,0,0,0),
+        rgba(40,40,40,1));
+    width: 50vw;
+    left: 100px;
+    color: white;
+    padding-left: 10vw;
+    padding-top: 3vh;
+}
+
+.injectordiv {
+    position: relative;
+    bottom: 1230px;
+    left: 0px;
+    width: 120px;
+    height: 100px;
+    background-color: rgba(0,0,0,0);
+    border-radius: 10px;
+    color: rgba(0,0,0,0);
+    font-size: 15px;
+}
+.injectordiv:hover {
+    background-color: rgba(0,0,0,0);
+    background-image: linear-gradient(90deg,
+        rgba(0,0,0,0),
+        rgba(40,40,40,1));
+    width: 50vw;
+    left: 100px;
+    height: 120px;
+    color: white;
+    padding-left: 13vw;
+    padding-top: 3vh;
+}
+
+.graindiv {
+    position: relative;
+    bottom: 1230px;
+    left: 0px;
+    width: 120px;
+    height: 380px;
+    background-color: rgba(0,0,0,0);
+    border-radius: 10px;
+    color: rgba(0,0,0,0);
+    font-size: 15px;
+}
+.graindiv:hover {
+    background-color: rgba(0,0,0,0);
+    background-image: linear-gradient(90deg,
+        rgba(0,0,0,0),
+        rgba(40,40,40,1));
+    width: 50vw;
+    left: 100px;
+    color: white;
+    padding-left: 13vw;
+    padding-top: 3vh;
+}
+
+.nozzlediv {
+    position: relative;
+    bottom: 1230px;
+    left: 0px;
+    width: 120px;
+    height: 130px;
+    background-color: rgba(0,0,0,0);
+    border-radius: 10px;
+    color: rgba(0,0,0,0);
+    font-size: 15px;
+}
+.nozzlediv:hover {
+    background-color: rgba(0,0,0,0);
+    background-image: linear-gradient(90deg,
+        rgba(0,0,0,0),
+        rgba(40,40,40,1));
+    width: 50vw;
+    left: 100px;
+    color: white;
+    padding-left: 13vw;
+    padding-top: 3vh;
+}
+
+
+pre code {
+    background-color: rgba(255,255,255,0.1);
+    height: 30vh;
+    border: 1px solid #999;
+    display: block;
+    padding: 20px;
+    color: rgb(255, 255, 255);
+    overflow-x: scroll;
+    overflow-y: scroll;
+    resize: vertical;
+  }
+
+  /* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  ::-webkit-resizer {
+    border: 1px solid rgba(100,100,100,1);
+    background: rgba(48, 48, 48, 1);
+
+    /*size does not work*/  
+    display:block;  
+    width: 150px !important;
+    height: 150px !important;
+}
+
+a {
+    color: rgb(243, 102, 102);
+}
+
+a:hover {
+    color: rgb(243, 102, 102);
+}
+
+.end {
+    width: 100vw;
+    background-color: rgba(50,50,50,1);
+    color: white;
+    font-size: 15px;
+    padding: 20px;
+    padding-left: 5%;
+}
