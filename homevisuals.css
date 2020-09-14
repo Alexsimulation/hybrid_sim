@@ -158,9 +158,9 @@ body {
         rgba(0,0,0,0),
         rgba(40,40,40,1));
     width: 50vw;
-    left: 100px;
+    left: 0px;
     color: white;
-    padding-left: 10vw;
+    padding-left: 13vw;
     padding-top: 3vh;
 }
 
@@ -181,9 +181,9 @@ body {
         rgba(0,0,0,0),
         rgba(40,40,40,1));
     width: 50vw;
-    left: 100px;
+    left: 0px;
     color: white;
-    padding-left: 10vw;
+    padding-left: 13vw;
     padding-top: 3vh;
 }
 
@@ -204,7 +204,7 @@ body {
         rgba(0,0,0,0),
         rgba(40,40,40,1));
     width: 50vw;
-    left: 100px;
+    left: 0px;
     height: 120px;
     color: white;
     padding-left: 13vw;
@@ -228,7 +228,7 @@ body {
         rgba(0,0,0,0),
         rgba(40,40,40,1));
     width: 50vw;
-    left: 100px;
+    left: 0px;
     color: white;
     padding-left: 13vw;
     padding-top: 3vh;
@@ -251,7 +251,7 @@ body {
         rgba(0,0,0,0),
         rgba(40,40,40,1));
     width: 50vw;
-    left: 100px;
+    left: 0px;
     color: white;
     padding-left: 13vw;
     padding-top: 3vh;
