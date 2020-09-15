@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie-edge">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-        <script type="module" src="main.js"></script>
+        <script type="module" src="burn.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></link>
         <link rel="stylesheet" href="burnvisuals.css"></link>
         <link rel="shortcut icon" type="image/x-icon" href="fire.ico">
@@ -53,8 +53,8 @@
             </div>
 
             <script type="module">
-                import { get_results } from "./main.js";
-                import {radius_data, thrust_data, impulse_data, of_data, ISP_data} from "./main.js";
+                import { get_results } from "./burn.js";
+                import {radius_data, thrust_data, impulse_data, of_data, ISP_data} from "./burn.js";
                 Chart.defaults.global.defaultFontColor = 'white';
                 Chart.defaults.global.defaultFontSize = 15;
                 let myChart = document.getElementById('myChart').getContext('2d');
@@ -328,12 +328,10 @@
               </pre>
         </div>
 
-        <div class="myparagraph">
-            <h1>Learn more</h1>
-            For more information about the code used on this page, the source code is available 
-            <a href="https://github.com/Alexsimulation/hybrid_sim" target="_blank">here</a>.
-            To design hybrid rocket motors, or rocket motors in general, <a href="https://www.grc.nasa.gov/www/CEAWeb/" target="_blank">CEA</a>
-            , an online tool by NASA, is a must.
+        <div class="end">
+            <strong>Contact: </strong><a href = "mailto: alexis.angers@polymtl.ca">alexis.angers@polymtl.ca</a><br>
+            <strong>Source code: </strong><a href = "https://github.com/Alexsimulation/hybrid_sim">github.com/Alexsimulation/hybrid_sim</a><br>
+
         </div>
 
     </body>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie-edge">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+        <script type="module" src="nozzle.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="nozzlevisuals.css"></link>
+        <link rel="shortcut icon" type="image/x-icon" href="fire.ico">
+        <title>hybrid_sim.nozzle</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <style> 
+            select {
+              width: 100%;
+              padding: 16px 20px;
+              border: none;
+              border-radius: 4px;
+              background-color: #f1f1f1;
+            }
+        </style>
+    </head>
+
+    <body>
+        <form onsubmit="redirect_function(); return false">
+            <div class="myheader">
+                &nbsp <label for="activepage">hybrid_sim.&nbsp</label>
+                    <input list="activepage" class="pageselector" name="pageselector" id="pageselector" value="nozzle"/>
+                    <datalist id="activepage">
+                        <option value="home"></option>
+                        <option value="burn"></option>
+                        <option value="nozzle"></option>
+                    </datalist>
+            </div>
+        </form>
+
+        <script>
+            function redirect_function() {
+                id_red = document.getElementById("pageselector").value;
+                if (id_red == "home") {
+                    window.location.href = "https://alexsimulation.github.io/hybrid_sim/index.html";
+                } else if (id_red == "burn") {
+                    window.location.href = "https://alexsimulation.github.io/hybrid_sim/burn.html";
+                }
+            }
+        </script>
+
+
+        <div class="mylargecontainer">
+
+            <div class="mygraphcontainer">
+                <div class="mygraphshape">
+                    <canvas id="ShapeChart"></canvas>
+                </div>
+                <div class="mygraphdata">
+                    <canvas id="DataChart"></canvas>
+                </div>
+            </div>
+
+            <script type="module">
+                import { get_results } from "./nozzle.js";
+                import {nozzle_xy, nozzle_m, nozzle_p} from "./nozzle.js";
+                Chart.defaults.global.defaultFontColor = 'white';
+                Chart.defaults.global.defaultFontSize = 15;
+                let ShapeChart = document.getElementById('ShapeChart').getContext('2d');
+                let DataChart = document.getElementById('DataChart').getContext('2d');
+                let ShapeNozzleChart = new Chart(ShapeChart, {
+                    type:'scatter',
+                    data:{
+                        datasets:[
+                        {
+                            label:'Nozzle Shape',
+                            fill: true,
+                            backgroundColor: "rgba(200,200,200,0.5)",
+                            lineTension: 0.1,
+                            borderColor: "rgba(200,200,200,1)",
+                            pointRadius: 1,
+                            pointHitRaduis: 10,
+                            showLine: true,
+                            data: nozzle_xy
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                fontColor: "rgba(0,0,0,0)"
+                                },
+                                gridLines: { 
+                                    color: "rgba(0,0,0,0)"
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                fontColor: "rgba(0,0,0,0)",
+                                min: 0,
+                                },
+                                gridLines: { 
+                                    color: "rgba(0,0,0,0)"
+                                }
+                            }],
+                            
+                        },
+                        legend: {
+                                display: false
+                        }
+                    }
+                });
+                let DataNozzleChart = new Chart(DataChart, {
+                    type:'scatter',
+                    data:{
+                        datasets:[
+                        {
+                            label:'Mach Number',
+                            fill: false,
+                            lineTension: 0.1,
+                            borderColor: "rgba(204,0,0,1)",
+                            pointRadius: 1,
+                            pointHitRaduis: 10,
+                            showLine: true,
+                            data: nozzle_m
+                        } , {
+                            label:'Pressure (kPa)',
+                            fill: false,
+                            lineTension: 0.1,
+                            borderColor: "rgba(0,150,0,1)",
+                            pointRadius: 1,
+                            pointHitRaduis: 10,
+                            hidden: true,
+                            showLine: true,
+                            data: nozzle_p
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'X (m)',
+                                    fontColor:'white'
+                                },
+                                ticks: {
+                                fontColor: "white"
+                                },
+                                gridLines: { 
+                                    color: "#6e6e6e" 
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                fontColor: "white",
+                                min: 0,
+                                },
+                                gridLines: { 
+                                    color: "#6e6e6e" 
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                function addData(chart, label, data) {
+                    chart.data.labels.push(label);
+                    chart.data.datasets.forEach((dataset) => {
+                        dataset.data.push(data);
+                    });
+                    chart.update();
+                }
+
+                function removeData(chart) {
+                    chart.data.labels.pop();
+                    chart.data.datasets.forEach((dataset) => {
+                        dataset.data.pop();
+                    });
+                    chart.update();
+                }
+
+                function update_graph() {
+                    let g = parseFloat(document.getElementById("gamma").value);
+                    let At = parseFloat(document.getElementById("at").value);
+                    let E = parseFloat(document.getElementById("expan").value);
+                    let Pc = parseFloat(document.getElementById("pc").value)*1000;
+                    let Patm = parseFloat(document.getElementById("patm").value)*1000;
+                    let type = document.getElementById("typenoz").value;
+                    let Lf = parseFloat(document.getElementById("lf").value);
+                    let res = get_results(g,E,At,Pc,Patm,type,Lf,1);
+                    ShapeNozzleChart.data.datasets[0].data = res[0];
+                    for (var i = 1; i <= DataNozzleChart.data.datasets.length; i++) {
+                        DataNozzleChart.data.datasets[i-1].data = res[i];
+                    }
+                    ShapeNozzleChart.update();
+                    DataNozzleChart.update();
+                }
+
+                let q1 = document.getElementById("but1");
+                if (q1) {
+                    q1.addEventListener("click",update_graph);
+                }
+
+                
+
+            </script>
+
+            <div class="myform" align="right">
+                <br>
+                <form>
+                    <table class="tablespaced">
+                    <tr>
+                        <button class="button" align="left" type="button" id="but1" >Update Graph</button>
+                    </tr>
+                    <tr>
+                        <td align="right">Specific heat ratio :&nbsp</td>
+                        <td align="left"><input class="field" id = "gamma" type="number" name="gamma" min=0.01 step = 0.01 value=1.4 /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Throat area \(\left(m^2\right)\):&nbsp</td>
+                        <td align="left"><input class="field" id = "at" type="number" name="At" min=0.00001  step = 0.00001 value=0.05 /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Expansion ratio:&nbsp</td>
+                        <td align="left"><input class="field" id = "expan" type="number" name="expan" min=0.05  step = 0.05 value=10 /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Atmospheric pressure \((kPa)\):&nbsp</td>
+                        <td align="left"><input class="field" id = "patm" type="number" name="patm" min=0.01 step = 10 value=100 /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Chamber pressure \((kPa)\):&nbsp</td>
+                        <td align="left"><input class="field" id = "pc" type="number" name="pc" min=0.01 step = 10 value=5000 /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Chamber temperature \((K)\):&nbsp</td>
+                        <td align="left"><input class="field" id = "tc" type="number" name="tc" min=0.01 step = 10 value=3000 /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Gas constant \([J/(kg\cdot K)]\):&nbsp</td>
+                        <td align="left"><input class="field" id = "rg" type="number" name="rg" min=0.01 step = 1 value=300 /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Type:&nbsp</td>
+                        <td align="left"><select class="field" name="type" id="typenoz" value="conical">
+                            <option value="conical">conical</option>
+                            <option value="bell">bell</option>
+                        </select></td>
+                    </tr>
+                    <tr id="lf_tr" style="display: none;" >
+                        <td align="right">Length fraction:&nbsp</td>
+                        <td align="left"><input class="field" id = "lf" type="number" name="lf" min=0.8 max=1 step = 0.01 value=1 /></td>
+                    </tr>
+                    </table>
+                </form>
+                <br>
+            </div>
+        </div>
+
+        <script>
+            function advanced_form() {
+                let i = q2.value;
+                if (i == 'bell') {
+                    document.getElementById("lf_tr").style.display = 'table-row';
+                } else {
+                    document.getElementById("lf_tr").style.display = 'none';
+                }
+            }
+            q2 = document.getElementById("typenoz");
+            if (q2) {
+                q2.addEventListener('change',advanced_form);
+            }
+        </script>
+
+        <div class="myfirstskip"></div>
+
+        <div class="myparagraph">
+            <h1>
+                Nozzle Results
+            </h1>
+            Data below shows interesting parameters like exhaust state, normal shock position, and more.
+            <pre>
+                <code id="datawindow">
+                </code>
+              </pre>
+        </div>
+
+        <div class="myparagraph">
+            <h1>
+                Export XY Points
+            </h1>
+            You can copy the CSV points below to a text file to save your nozzle shape.
+
+            <pre>
+                <code id="pointswindow">
+                </code>
+              </pre>
+        </div>
+
+        <script  type="module">
+            import { get_results } from "./nozzle.js";
+            function update_codes() {
+                let dw = document.getElementById('datawindow');
+                let pw = document.getElementById('pointswindow');
+                let g = parseFloat(document.getElementById("gamma").value);
+                let At = parseFloat(document.getElementById("at").value);
+                let E = parseFloat(document.getElementById("expan").value);
+                let Pc = parseFloat(document.getElementById("pc").value)*1000;
+                let Patm = parseFloat(document.getElementById("patm").value)*1000;
+                let Tc = parseFloat(document.getElementById("tc").value);
+                let R = parseFloat(document.getElementById("rg").value);
+                let type = document.getElementById("typenoz").value;
+                let Lf = parseFloat(document.getElementById("lf").value);
+                let res = get_results(g,E,At,Pc,Patm,type,Lf,2);
+
+                /* First, results data*/
+                let state = res[1];
+                let M = res[2];
+                let P = res[3];
+                let str = '// Exhaust //<br>'
+                let shock_pos = 0;
+                if (state[0] == 'shock') {
+                    let found = 0;
+                    let i = 1;
+                    while ((found == 0)&&(i < M.length-2)) {
+                        if (Math.sign(M[i].y-M[i+1].y) == Math.sign(M[i].y-M[i-1].y)) {
+                            found = i;
+                        }
+                        i = i + 1;
+                    }
+                    if (found != 0) {
+                        shock_pos = res[0][found].x;
+                        str = str+'Exhaust state: Normal shock in nozzle<br>';
+                        str = str+'Normal shock position: '+shock_pos+' m<br>';
+                    } else {
+                        shock_pos = res[0][res[0].length-1].x;
+                        str = str+'Exhaust state: Normal shock at exit<br>';
+                    }
+                } else {
+                    str = str + 'Exhaust state: '+state[0]+'<br>';
+                }
+                str = str+'Exit Mach: '+M[M.length-1].y+'<br>';
+                str = str+'Exit Pressure: '+P[P.length-1].y+' kPa<br>';
+                let Me = M[M.length-1].y;
+                let Te = Tc*Math.pow(1+Me*Me*(g-1)/2,-1);
+                let Ve = Me*Math.sqrt(g*R*Te);
+                str = str+'Exit Velocity: '+Ve+' m/s<br>';
+                str = str+'Exit Temperature: '+Te+' K<br>';
+                str = str+'<br>// Throat //<br>';
+                let found = 0;
+                let i = 1;
+                while (found == 0) {
+                    if (M[i].x == 0) {
+                        found = i;
+                    }
+                    i = i + 1;
+                }
+                let Mt = M[found].y;
+                let m_dot = (At*Pc/Math.sqrt(Tc))*Math.sqrt(g/R)*Mt*Math.pow(1+Mt*Mt*(g-1)/2,-(g+1)/(2*g-2));
+                if (state[0] != 'subsonic') {
+                    str = str+'Throat state: choked<br>';
+                } else {
+                    str = str+'Throat state: subsonic<br>';
+                    str = str+'Throat Mach: '+ Mt+'<br>';
+                }
+                str = str + 'Mass flow: '+m_dot+' kg/s<br>';
+                str = str + '<br>// Thrust Profile //<br>';
+                let F = m_dot*Ve + (P[P.length-1].y*1000-Patm)*At*E;
+                str = str + 'Thrust: '+F/1000+' kN<br>';
+                str = str + 'Momentum term: '+m_dot*Ve/1000+' kN<br>';
+                str = str + 'Pressure term: '+(P[P.length-1].y*1000-Patm)*At*E/1000+' kN<br>';
+                dw.innerHTML = str;
+
+                /*Second, xy points*/
+                let shape = res[0];
+                str = ['x, y;<br>'];
+                let stri = '';
+                for (i = 0; i < shape.length; i++) {
+                    stri = shape[i].x+',&nbsp'+shape[i].y+';<br>';
+                    str = str+stri;
+                }
+                pw.innerHTML = str;
+            }
+            let q1 = document.getElementById("but1");
+            if (q1) {
+                q1.addEventListener("click",update_codes);
+            }
+            document.addEventListener('DOMContentLoaded',update_codes);
+        </script>
+
+
+        <div class="end">
+            <strong>Contact: </strong><a href = "mailto: alexis.angers@polymtl.ca">alexis.angers@polymtl.ca</a><br>
+            <strong>Source code: </strong><a href = "https://github.com/Alexsimulation/hybrid_sim">github.com/Alexsimulation/hybrid_sim</a><br>
+
+        </div>
+
+
+    </body>
+</html>
