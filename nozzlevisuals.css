@@ -154,7 +154,7 @@ body {
     height: 8vh;
     background-color: rgba(120,34,0,1);
     overflow: hidden;
-    margin-bottom: 200px;
+    margin-bottom: 20px;
 }
 
 .myskip {
@@ -174,9 +174,43 @@ body {
     text-align: justify;
 }
 
+.mysmallparagraph {
+    position: relative;
+    width: 600px;
+    background-color: rgba(0,0,0,0);
+    color: white;
+    margin: 5%;
+    text-align: justify;
+}
+
+.imagecontainer {
+    position: relative;
+    width: 90%;
+    height: 60%;
+    margin: 5%;
+    color: white;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.imagetext {
+    position: relative;
+    height: 100%;
+    width: 600px;
+    margin-right: 25px;
+    text-align: justify;
+}
+
+.image {
+    float: right;
+    height: 300px;
+    width: 600px;
+    align-self: center;
+}
+
 pre code {
     background-color: rgba(255,255,255,0.1);
-    height: 30vh;
+    height: 50vh;
     border: 1px solid #999;
     display: block;
     padding: 20px;

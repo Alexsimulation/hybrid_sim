@@ -58,55 +58,81 @@
                 Chart.defaults.global.defaultFontColor = 'white';
                 Chart.defaults.global.defaultFontSize = 15;
                 let myChart = document.getElementById('myChart').getContext('2d');
+
+                var RadGrad = myChart.createLinearGradient(0, 0, 0, 400);
+                RadGrad.addColorStop(0, 'rgba(0,200,90,0.7)');   
+                RadGrad.addColorStop(1, 'rgba(0,200,90,0.1)');
+
+                var ThrustGrad = myChart.createLinearGradient(0, 0, 0, 400);
+                ThrustGrad.addColorStop(0, 'rgba(204,0,0,0.7)');   
+                ThrustGrad.addColorStop(1, 'rgba(204,0,0,0.1)');
+
+                var ImpGrad = myChart.createLinearGradient(0, 0, 0, 400);
+                ImpGrad.addColorStop(0, 'rgba(75,192,192,0.7)');   
+                ImpGrad.addColorStop(1, 'rgba(75,192,192,0.1)');
+
+                var OFGrad = myChart.createLinearGradient(0, 0, 0, 400);
+                OFGrad.addColorStop(0, 'rgba(192,192,192,0.7)');   
+                OFGrad.addColorStop(1, 'rgba(192,192,192,0.1)');
+
+                var ISPGrad = myChart.createLinearGradient(0, 0, 0, 400);
+                ISPGrad.addColorStop(0, 'rgba(192,192,0,0.7)');   
+                ISPGrad.addColorStop(1, 'rgba(192,192,0,0.1)');
+
                 let RocketChart = new Chart(myChart, {
                     type:'scatter',
                     data:{
                         datasets:[
                         {
                             label:'Radius (cm)',
-                            fill: false,
+                            fill: true,
+                            backgroundColor: RadGrad,
                             lineTension: 0.1,
                             borderColor: "rgba(0,200,90,1)",
-                            pointRadius: 1,
+                            pointRadius: 0,
                             pointHitRaduis: 10,
                             hidden: true,
                             showLine: true,
                             data: radius_data
                         } , {
                             label:'Thrust (kN)',
-                            fill: false,
+                            fill: true,
+                            backgroundColor: ThrustGrad,
                             lineTension: 0.1,
                             borderColor: "rgba(204,0,0,1)",
-                            pointRadius: 1,
+                            pointRadius: 0,
                             pointHitRaduis: 10,
                             showLine: true,
                             data: thrust_data
                         } , {
                             label:'Impulse (kN.s)',
-                            fill: false,
+                            fill: true,
+                            backgroundColor: ImpGrad,
                             lineTension: 0.1,
                             borderColor: "rgba(75,192,192,1)",
-                            pointRadius: 1,
+                            pointRadius: 0,
                             pointHitRaduis: 10,
                             hidden: true,
                             showLine: true,
                             data: impulse_data
                         } , {
                             label:'O/F',
-                            fill: false,
+                            fill: true,
+                            backgroundColor: OFGrad,
                             lineTension: 0.1,
                             borderColor: "rgba(192,192,192,1)",
-                            pointRadius: 1,
+                            pointRadius: 0,
                             pointHitRaduis: 10,
                             hidden: true,
                             showLine: true,
                             data: of_data
                         } , {
                             label:'ISP (s)',
-                            fill: false,
+                            fill: true,
+                            backgroundColor: ISPGrad,
                             lineTension: 0.1,
                             borderColor: "rgba(192,192,0,1)",
-                            pointRadius: 1,
+                            pointRadius: 0,
                             pointHitRaduis: 10,
                             hidden: true,
                             showLine: true,
@@ -115,6 +141,11 @@
                     },
                     options: {
                         responsive: true,
+                        legend: {
+                            labels: {
+                            usePointStyle: true,
+                            },
+                        },
                         maintainAspectRatio: false,
                         scales: {
                             xAxes: [{
@@ -330,7 +361,7 @@
 
         <div class="end">
             <strong>Contact: </strong><a href = "mailto: alexis.angers@polymtl.ca">alexis.angers@polymtl.ca</a><br>
-            <strong>Source code: </strong><a href = "https://github.com/Alexsimulation/hybrid_sim">github.com/Alexsimulation/hybrid_sim</a><br>
+            <strong>Source code: </strong><a target="_blank" href = "https://github.com/Alexsimulation/hybrid_sim">github.com/Alexsimulation/hybrid_sim</a><br>
 
         </div>
 

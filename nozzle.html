@@ -20,6 +20,13 @@
               border-radius: 4px;
               background-color: #f1f1f1;
             }
+            datalist {
+              width: 100%;
+              padding: 16px 20px;
+              border: none;
+              border-radius: 4px;
+              background-color: #f1f1f1;
+            }
         </style>
     </head>
 
@@ -61,11 +68,34 @@
 
             <script type="module">
                 import { get_results } from "./nozzle.js";
-                import {nozzle_xy, nozzle_m, nozzle_p} from "./nozzle.js";
+                import {nozzle_xy, nozzle_m, nozzle_p, nozzle_t, nozzle_v} from "./nozzle.js";
                 Chart.defaults.global.defaultFontColor = 'white';
                 Chart.defaults.global.defaultFontSize = 15;
+
                 let ShapeChart = document.getElementById('ShapeChart').getContext('2d');
                 let DataChart = document.getElementById('DataChart').getContext('2d');
+
+                var ShapeGrad = ShapeChart.createLinearGradient(0, 0, 0, 400);
+                ShapeGrad.addColorStop(0, 'rgba(200,200,200,0.5)');   
+                ShapeGrad.addColorStop(1, 'rgba(0,0,0,0)');
+
+                var MachGrad = DataChart.createLinearGradient(0, 0, 0, 400);
+                MachGrad.addColorStop(0, 'rgba(204,0,0,0.7)');   
+                MachGrad.addColorStop(1, 'rgba(204,0,0,0.1)');
+
+                var PresGrad = DataChart.createLinearGradient(0, 0, 0, 400);
+                PresGrad.addColorStop(0, 'rgba(0,150,0,0.7)');   
+                PresGrad.addColorStop(1, 'rgba(0,150,0,0.1)');
+
+                var TempGrad = DataChart.createLinearGradient(0, 0, 0, 400);
+                TempGrad.addColorStop(0, 'rgba(200,150,0,0.7)');   
+                TempGrad.addColorStop(1, 'rgba(200,150,0,0.1)');
+
+                var VelGrad = DataChart.createLinearGradient(0, 0, 0, 400);
+                VelGrad.addColorStop(0, 'rgba(0,100,250,0.7)');   
+                VelGrad.addColorStop(1, 'rgba(0,100,250,0.1)');
+
+
                 let ShapeNozzleChart = new Chart(ShapeChart, {
                     type:'scatter',
                     data:{
@@ -73,10 +103,11 @@
                         {
                             label:'Nozzle Shape',
                             fill: true,
-                            backgroundColor: "rgba(200,200,200,0.5)",
+                            backgroundColor: ShapeGrad,
                             lineTension: 0.1,
                             borderColor: "rgba(200,200,200,1)",
-                            pointRadius: 1,
+                            borderWidth: 1,
+                            pointRadius: 0,
                             pointHitRaduis: 10,
                             showLine: true,
                             data: nozzle_xy
@@ -84,6 +115,20 @@
                     },
                     options: {
                         responsive: true,
+                        tooltips: {
+                            callbacks: {
+                            title: function() {
+                                return "";
+                            },
+                            label: function(item, data) {
+                                var datasetLabel = data.datasets[item.datasetIndex].label || "";
+                                return datasetLabel;
+                            }
+                            },
+                            mode: 'index',
+                            position: 'cursor',
+						    intersect: false
+                        },
                         maintainAspectRatio: false,
                         scales: {
                             xAxes: [{
@@ -106,7 +151,10 @@
                             
                         },
                         legend: {
-                                display: false
+                            display: false, 
+                            labels: {
+                            usePointStyle: true,
+                            },
                         }
                     }
                 });
@@ -116,27 +164,78 @@
                         datasets:[
                         {
                             label:'Mach Number',
-                            fill: false,
                             lineTension: 0.1,
                             borderColor: "rgba(204,0,0,1)",
-                            pointRadius: 1,
+                            fill: true,
+                            backgroundColor: MachGrad,
+                            borderWidth: 1,
+                            pointRadius: 0,
                             pointHitRaduis: 10,
                             showLine: true,
                             data: nozzle_m
                         } , {
                             label:'Pressure (kPa)',
-                            fill: false,
                             lineTension: 0.1,
                             borderColor: "rgba(0,150,0,1)",
-                            pointRadius: 1,
+                            fill: true,
+                            backgroundColor: PresGrad,
+                            borderWidth: 1,
+                            pointRadius: 0,
                             pointHitRaduis: 10,
                             hidden: true,
                             showLine: true,
                             data: nozzle_p
+                        } , {
+                            label:'Temperature (K)',
+                            lineTension: 0.1,
+                            borderColor: "rgba(200,150,0,1)",
+                            fill: true,
+                            backgroundColor: TempGrad,
+                            borderWidth: 1,
+                            pointRadius: 0,
+                            pointHitRaduis: 10,
+                            hidden: true,
+                            showLine: true,
+                            data: nozzle_t
+                        } , {
+                            label:'Velocity (m/s)',
+                            lineTension: 0.1,
+                            borderColor: "rgba(0,100,250,1)",
+                            fill: true,
+                            backgroundColor: VelGrad,
+                            borderWidth: 1,
+                            pointRadius: 0,
+                            pointHitRaduis: 10,
+                            hidden: true,
+                            showLine: true,
+                            data: nozzle_v
                         }]
                     },
                     options: {
                         responsive: true,
+                        legend: {
+                            labels: {
+                            usePointStyle: true,
+                            },
+                        },
+                        tooltips: {
+                            callbacks: {
+                            title: function() {
+                                return "";
+                            },
+                            label: function(item, data) {
+                                var datasetLabel = data.datasets[item.datasetIndex].label || "";
+                                var dataX = item.xLabel;
+                                var dataY = item.yLabel;
+                                var result = datasetLabel+': '+dataY.toPrecision(4)+', ';
+                                result = result + 'X (m): '+dataX.toPrecision(4);
+                                return result;
+                            }
+                            },
+                            mode: 'index',
+                            position: 'nearest',
+						    intersect: false
+                        },
                         maintainAspectRatio: false,
                         scales: {
                             xAxes: [{
@@ -146,11 +245,11 @@
                                     fontColor:'white'
                                 },
                                 ticks: {
-                                fontColor: "white"
+                                fontColor: "white",
                                 },
                                 gridLines: { 
                                     color: "#6e6e6e" 
-                                }
+                                },
                             }],
                             yAxes: [{
                                 ticks: {
@@ -164,6 +263,11 @@
                         }
                     }
                 });
+
+
+                Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
+                    return coordinates;
+                };
 
                 function addData(chart, label, data) {
                     chart.data.labels.push(label);
@@ -187,12 +291,18 @@
                     let E = parseFloat(document.getElementById("expan").value);
                     let Pc = parseFloat(document.getElementById("pc").value)*1000;
                     let Patm = parseFloat(document.getElementById("patm").value)*1000;
+                    let Tc = parseFloat(document.getElementById("tc").value);
+                    let R = parseFloat(document.getElementById("rg").value);
                     let type = document.getElementById("typenoz").value;
                     let Lf = parseFloat(document.getElementById("lf").value);
-                    let res = get_results(g,E,At,Pc,Patm,type,Lf,1);
+                    if ((Lf > 1)||(Lf < 0.5)) {
+                        Lf = 1;
+                        document.getElementById('lf').value = 1;
+                    }
+                    let res = get_results(g,E,At,Pc,Patm,type,Lf,Tc,R,1);
                     ShapeNozzleChart.data.datasets[0].data = res[0];
-                    for (var i = 1; i <= DataNozzleChart.data.datasets.length; i++) {
-                        DataNozzleChart.data.datasets[i-1].data = res[i];
+                    for (var i = 0; i < DataNozzleChart.data.datasets.length; i++) {
+                        DataNozzleChart.data.datasets[i].data = res[i+1];
                     }
                     ShapeNozzleChart.update();
                     DataNozzleChart.update();
@@ -276,27 +386,30 @@
 
         <div class="myfirstskip"></div>
 
-        <div class="myparagraph">
-            <h1>
-                Nozzle Results
-            </h1>
-            Data below shows interesting parameters like exhaust state, normal shock position, and more.
-            <pre>
-                <code id="datawindow">
-                </code>
-              </pre>
-        </div>
+        <div class="mylargecontainer">
+            <div class="mysmallparagraph">
+                <h1>
+                    Nozzle Results
+                </h1>
+                Data below shows state and parameters for different nozzle sections.
+                <pre>
+                    <code id="datawindow">
+                    </code>
+                </pre>
+            </div>
 
-        <div class="myparagraph">
-            <h1>
-                Export XY Points
-            </h1>
-            You can copy the CSV points below to a text file to save your nozzle shape.
 
-            <pre>
-                <code id="pointswindow">
-                </code>
-              </pre>
+            <div class="mysmallparagraph">
+                <h1>
+                    Export XY Points
+                </h1>
+                You can copy the CSV points below to a text file to save your nozzle shape.
+
+                <pre>
+                    <code id="pointswindow">
+                    </code>
+                </pre>
+            </div>
         </div>
 
         <script  type="module">
@@ -313,12 +426,22 @@
                 let R = parseFloat(document.getElementById("rg").value);
                 let type = document.getElementById("typenoz").value;
                 let Lf = parseFloat(document.getElementById("lf").value);
-                let res = get_results(g,E,At,Pc,Patm,type,Lf,2);
+
+                if ((Lf > 1)||(Lf < 0.5)) {
+                    Lf = 1;
+                    document.getElementById('lf').value = 1;
+                }
+
+                let res = get_results(g,E,At,Pc,Patm,type,Lf,Tc,R,2);
 
                 /* First, results data*/
+                let shape = res[0];
                 let state = res[1];
                 let M = res[2];
                 let P = res[3];
+                let T = res[4];
+                let V = res[5];
+                let angles = res[6];
                 let str = '// Exhaust //<br>'
                 let shock_pos = 0;
                 if (state[0] == 'shock') {
@@ -358,6 +481,8 @@
                     i = i + 1;
                 }
                 let Mt = M[found].y;
+                let Tt = T[found].y;
+                let Vt = V[found].y;
                 let m_dot = (At*Pc/Math.sqrt(Tc))*Math.sqrt(g/R)*Mt*Math.pow(1+Mt*Mt*(g-1)/2,-(g+1)/(2*g-2));
                 if (state[0] != 'subsonic') {
                     str = str+'Throat state: choked<br>';
@@ -366,19 +491,30 @@
                     str = str+'Throat Mach: '+ Mt+'<br>';
                 }
                 str = str + 'Mass flow: '+m_dot+' kg/s<br>';
+                str = str + 'Throat Temperature: '+Tt+' K<br>';
+                str = str + 'Throat Velocity: '+Vt+' m/s<br>';
+
                 str = str + '<br>// Thrust Profile //<br>';
-                let F = m_dot*Ve + (P[P.length-1].y*1000-Patm)*At*E;
+                let Dloss = (1+Math.cos((angles[0]+angles[1])/2))/2;
+                let F = m_dot*Ve*Dloss + (P[P.length-1].y*1000-Patm)*At*E;
+                let ISP = F/(m_dot*9.81);
                 str = str + 'Thrust: '+F/1000+' kN<br>';
-                str = str + 'Momentum term: '+m_dot*Ve/1000+' kN<br>';
+                str = str + 'Momentum term: '+m_dot*Ve*Dloss/1000+' kN<br>';
                 str = str + 'Pressure term: '+(P[P.length-1].y*1000-Patm)*At*E/1000+' kN<br>';
+                str = str + 'Divergence losses: '+(1-Dloss)*100+' %<br>';
+                str = str + 'ISP: '+ISP+' s<br>';
+
+                str = str + '<br>// Geometry //<br>Divergent Length: '+M[M.length-1].x+' m<br>';
+                str = str + 'Throat Area: '+At+' m^2<br>';
+                str = str + 'Exit Area: '+At*E+' m^2<br>';
+                str = str + 'Expansion ratio: '+E+'<br>';
                 dw.innerHTML = str;
 
                 /*Second, xy points*/
-                let shape = res[0];
-                str = ['x, y;<br>'];
+                str = ['x, y<br>'];
                 let stri = '';
                 for (i = 0; i < shape.length; i++) {
-                    stri = shape[i].x+',&nbsp'+shape[i].y+';<br>';
+                    stri = shape[i].x+',&nbsp'+shape[i].y+'<br>';
                     str = str+stri;
                 }
                 pw.innerHTML = str;
@@ -390,11 +526,84 @@
             document.addEventListener('DOMContentLoaded',update_codes);
         </script>
 
+        <div class="myskip"></div>
+
+        <div class="myparagraph">
+            <h1>Theoretical Nozzle Design</h1>
+            To define a nozzle, one must have a couple of handy parameters: the desired propellants mass flow \((\dot{m})\), chamber pressure \((P_c)\), chamber 
+            temperature \((T_c)\), and exhaust gas constant (\(R)\). After the problem is defined, the throat area \((A_t)\) can be calculated using the following relation for choked flow, using
+            throat parameters for \(\gamma\) and \(R\) if available:
+            <div style="font-size: 20px">$$
+            A_t = \frac{\dot{m}\sqrt{T_c}}{P_c}\sqrt{\frac{R}{\gamma}}\left(\frac{\gamma+1}{2}\right)^{\frac{\gamma+1}{2(\gamma-1)}}
+            $$</div>
+            The expansion ratio is a bit harder to find. First, we must compute the exit mach number given perfect expansion using the following relation:
+            <div style="font-size: 20px">$$
+            M_e = \frac{2}{\gamma-1}\left[\left(\frac{P_c}{P_{atm}}\right)^{\frac{\gamma-1}{\gamma}}-1\right]
+            $$</div>
+            The expansion ratio (and at the same time the exit area) can then be computed using the Area-Mach Number relation:
+            <div style="font-size: 20px">$$
+            \frac{A_e}{A_t} = \frac{1}{M_e}\left(\frac{\gamma+1}{2}\right)^{-\frac{\gamma+1}{2(\gamma-1)}}\left(1+\frac{\gamma-1}{2}{M_e}^2\right)^{\frac{\gamma+1}{2(\gamma-1)}}
+            $$</div>
+            After the important part of the geometry is defined, we can get the theoretical thrust of the nozzle using the rocket thrust equation:
+            <div style="font-size: 20px">$$
+            T = \dot{m}V_e = \dot{m}M_e\sqrt{\gamma R Te}
+            $$</div>
+            <div style="font-size: 20px">$$
+            T = \dot{m}M_e\sqrt{\gamma R T_c \left(1+\frac{\gamma-1}{2}{M_e}^2\right)^{-1}}
+            $$</div>
+            The \(ISP\) in seconds can be obtained from the thrust and mass flow with the relation:
+            <div style="font-size: 20px">$$
+            ISP = \frac{T}{g\cdot\dot{m}}
+            $$</div>
+        </div>
+        <div class="imagecontainer">
+            <div class="imagetext">
+            <h1>In Practice: Shape Design</h1>
+            To trace the contour of a nozzle and get its actual shape, many methods are documented. The simplest is to simply make a \(15^{\circ}\) conical nozzle, 
+            where the divergent section is just a straight line. The most complicated method is the method of characteristics, which uses characteristic lines in the 
+            flow to determine optimal nozzle curvature. This page uses a parabolic bezier curve to approximate the nozzle bell shape. The defining parameters of the 
+            nozzle shape are:
+            </div>
+            <div class="image">
+                <img src="nozzle_contour.png" alt="Nozzle schema" class="image">
+            </div>
+            
+        </div>
+
+        <div class="myskip"></div>
+
+        <div class="myparagraph">
+            <h1>References</h1>
+            <ul>
+                <li>
+                    Bell nozzle contour using Bezier Curves: 
+                    <a target="_blank" href = "http://www.aspirespace.org.uk/downloads/Thrust%20optimised%20parabolic%20nozzle.pdf"> 
+                        The Thrust Optimized Parabolic Nozzle (pdf)
+                    </a>
+                </li>
+                <li>
+                    Isentropic flow relations in convergent-divergent nozzle: 
+                    <a target="_blank" href = "https://www.grc.nasa.gov/WWW/k-12/airplane/isentrop.html"> 
+                        NASA - Isentropic Flow
+                    </a>
+                </li>
+                <li>
+                    Video series on compressible flow: 
+                    <a target="_blank" href = "https://www.youtube.com/playlist?list=PLxT-itJ3HGuVt4A8cwi4WdUudTbh1TQVV"> 
+                        Compressible Flow (JoshTheEngineer)
+                    </a>
+                </li>
+                <li>
+                    Online combustion simulator for rockets: 
+                    <a target="_blank" href = "https://www.grc.nasa.gov/www/CEAWeb/">NASA CEA - Chemical Equilibrium with Applications</a>
+                </li>
+              </ul>
+        </div>
+
 
         <div class="end">
             <strong>Contact: </strong><a href = "mailto: alexis.angers@polymtl.ca">alexis.angers@polymtl.ca</a><br>
-            <strong>Source code: </strong><a href = "https://github.com/Alexsimulation/hybrid_sim">github.com/Alexsimulation/hybrid_sim</a><br>
-
+            <strong>Source code: </strong><a target="_blank" href = "https://github.com/Alexsimulation/hybrid_sim">github.com/Alexsimulation/hybrid_sim</a><br>
         </div>
 
 
