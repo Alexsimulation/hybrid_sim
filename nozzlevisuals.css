@@ -35,7 +35,6 @@ body {
     outline: none;
 }
 
-
 .mylargecontainer {
     position: relative;
     top: 8vh;
@@ -281,7 +280,6 @@ a:hover {
         background-color: rgba(0,0,0,0);
         color: white;
     }
-
 
     .imagetext {
         position: relative;
