@@ -270,3 +270,29 @@ a:hover {
     padding-left: 5%;
     overflow: hidden;
 }
+
+@media only screen and (max-width: 1128px) {
+
+    .mygraphcontainer {
+        position: relative;
+        height: 80vh;
+        width: 100%;
+        margin: 2%;
+        background-color: rgba(0,0,0,0);
+        color: white;
+    }
+
+
+    .imagetext {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        margin-right: 25px;
+        text-align: justify;
+    }
+    .image {
+        height: auto;
+        max-width: 100%;
+        min-width: 100%;
+    }
+}

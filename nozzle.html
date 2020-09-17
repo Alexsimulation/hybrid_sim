@@ -95,7 +95,6 @@
                 VelGrad.addColorStop(0, 'rgba(0,100,250,0.7)');   
                 VelGrad.addColorStop(1, 'rgba(0,100,250,0.1)');
 
-
                 let ShapeNozzleChart = new Chart(ShapeChart, {
                     type:'scatter',
                     data:{
@@ -306,6 +305,14 @@
                         An = 15;
                         document.getElementById('an').value = 15;
                     }
+                    if (E < 1.05) {
+                        E = 1.05;
+                        document.getElementById('expan').value = 1.05;
+                    }
+                    if (Pc <= Patm) {
+                        Patm = Pc/2;
+                        document.getElementById('patm').value = Patm/1000;
+                    }
                     let res = get_results(gt,ge,E,At,Pc,Patm,type,Lf,Tc,Rt,Re,An,1);
                     ShapeNozzleChart.data.datasets[0].data = res[0];
                     for (var i = 0; i < DataNozzleChart.data.datasets.length; i++) {
@@ -345,7 +352,7 @@
                     </tr>
                     <tr>
                         <td align="right">Expansion ratio:&nbsp</td>
-                        <td align="left"><input class="field" id = "expan" type="number" name="expan" min=0.05  step = 0.05 value=10 /></td>
+                        <td align="left"><input class="field" id = "expan" type="number" name="expan" min=1.05  step = 0.05 value=10 /></td>
                     </tr>
                     <tr>
                         <td align="right">Atmospheric pressure \((kPa)\):&nbsp</td>
@@ -461,6 +468,14 @@
                     An = 15;
                     document.getElementById('an').value = 15;
                 }
+                if (E < 1.05) {
+                    E = 1.05;
+                    document.getElementById('expan').value = 1.05;
+                }
+                if (Pc <= Patm) {
+                    Patm = Pc/2;
+                    document.getElementById('patm').value = Patm/1000;
+                }
 
                 let res = get_results(gt,ge,E,At,Pc,Patm,type,Lf,Tc,Rt,Re,An,2);
 
@@ -484,7 +499,11 @@
                         i = i + 1;
                     }
                     if (found != 0) {
-                        shock_pos = res[0][found].x;
+                        if (found != (res.length-1)) {
+                            shock_pos = (res[0][found].x+res[0][found+1].x)/2;
+                        } else {
+                            shock_pos = res[0][found].x;
+                        }
                         str = str+'Exhaust state: Normal shock in nozzle<br>';
                         str = str+'Normal shock position: '+shock_pos+' m<br>';
                     } else {
