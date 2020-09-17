@@ -165,6 +165,17 @@ function makeArr(a,b,n) {
     return ret;
 }
 
+function makeGR(v1,v2,a) {
+    let i = 0;
+    while ((a[i]>a[i+1])&&(i < a.length)) {
+        i = i + 1;
+    }
+    let arr1 = makeArr(v1,v1,i);
+    let arr2 = makeArr(v1,v2,a.length-i);
+    let arr = arr1.concat(arr2);
+    return arr;
+}
+
 function quadratic_bezier(pts,Nr,type) {
     if (type == 'angles') {
         let N = pts[0];
@@ -298,12 +309,12 @@ function find_state(P0,Pb,g,At,Ae) {
 function bell_angle(E,Lf) {
     let ang1 = 18;
     let ang2 = 15;
-    if ((E > 1.99)&&(E <= 100.05)&&(Lf <= 1.05)) {
+    if ((E > 2.2)&&(E <= 100.05)) {
         ang1 = (71-56/(0.01*E+1))+25*(1-Lf);
         ang2 = (23/E+3)+25*(1-Lf);
-    } else if (E <= 1.99) {
-        ang1 = 1.1*Math.atan(1/(Lf)*Math.tan(15*Math.PI/180))*180/Math.PI;
-        ang2 = 0.9*Math.atan(1/(Lf)*Math.tan(15*Math.PI/180))*180/Math.PI;
+    } else if (E <= 2.2) {
+        ang1 = 1.05*Math.atan(1/(Lf)*Math.tan(15*Math.PI/180))*180/Math.PI;
+        ang2 = 0.95*Math.atan(1/(Lf)*Math.tan(15*Math.PI/180))*180/Math.PI;
     } else {
         E = 100;
         ang1 = (71-56/(0.01*E+1))+25*(1-Lf);
@@ -313,7 +324,7 @@ function bell_angle(E,Lf) {
     return ang;
 }
 
-function nozzle_shape(type,At,E,Lf) {
+function nozzle_shape(type,At,E,Lf,An) {
     let x = [];
     let y = [];
     let Rt = Math.sqrt(At/Math.PI);
@@ -322,15 +333,15 @@ function nozzle_shape(type,At,E,Lf) {
         let Rc = 1.5*Rt;
         let Rs = 0.382*Rt;
         let x0c = -1*Rc*Math.sin(Math.PI/4);
-        let a = 15*Math.PI/180;
+        let a = An*Math.PI/180;
         let x0s = Rs*Math.sin(a);
         let y0s = Rt+Rs*(1-Math.cos(a));
         let L = (Re-y0s)/Math.tan(a);
-        let xc = makeArr(x0c,0,31);
-        xc.pop();
+        let xc = makeArr(x0c,0,30);
         let xs = makeArr(0,x0s,11);
-        xs.pop();
-        let xd = makeArr(x0s,L+x0s,60);
+        xs.shift();
+        let xd = makeArr(x0s,L+x0s,61);
+        xd.shift();
         let yc = matrix_scalar(1,xc);
         let ind = 0;
         while (ind < xc.length) {
@@ -386,8 +397,8 @@ function nozzle_shape(type,At,E,Lf) {
     return result;
 }
 
-function area_x(type,At,E,Lf) {
-    let data = nozzle_shape(type,At,E,Lf);
+function area_x(type,At,E,Lf,An) {
+    let data = nozzle_shape(type,At,E,Lf,An);
     let x = data.x;
     let r = data.y;
     let area = matrix_scalar(1,r);
@@ -398,12 +409,15 @@ function area_x(type,At,E,Lf) {
     return result;
 }
 
-function write_vectors(state_info,g,At,E,Lf,type,Pc,Tc,R) {
-    let area = area_x(type,At,E,Lf);
+function write_vectors(state_info,gt,ge,At,E,Lf,type,Pc,Tc,Rt,Re,An) {
+    let area = area_x(type,At,E,Lf,An);
     let M = matrix_scalar(1,area.a);
     let P = matrix_scalar(1,area.a);
     let T = matrix_scalar(1,area.a);
     let V = matrix_scalar(1,area.a);
+    let g = makeGR(gt,ge,area.a);
+    let R = makeGR(Rt,Re,area.a);
+
     if ((state_info[0] == 'overexpanded')||(state_info[0] == 'underexpanded')) {
         let [state,[ME,[PErP0,PErPB]]] = state_info;
         let section = 'sub';
@@ -413,19 +427,19 @@ function write_vectors(state_info,g,At,E,Lf,type,Pc,Tc,R) {
             } else {
                 section = 'sup';
             }
-            M[i] = AMR(area.a[i]/At,g,section);
-            P[i] = Pc*Math.pow(1+M[i]*M[i]*(g-1)/2,-g/(g-1));
-            T[i] = Tc/(1+M[i]*M[i]*(g-1)/2);
-            V[i] = M[i]*Math.sqrt(g*R*T[i]);
+            M[i] = AMR(area.a[i]/At,g[i],section);
+            P[i] = Pc*Math.pow(1+M[i]*M[i]*(g[i]-1)/2,-g[i]/(g[i]-1));
+            T[i] = Tc/(1+M[i]*M[i]*(g[i]-1)/2);
+            V[i] = M[i]*Math.sqrt(g[i]*R[i]*T[i]);
         }
 
     } else if (state_info[0] == 'subsonic') {
         let [MEsub, [PErP0sub,PErPB]] = state_info;
         for (var i = 0; i < M.length; i++) {
-            M[i] = AMR(area.a[i]/At,g,'sub');
-            P[i] = Pc*Math.pow(1+M[i]*M[i]*(g-1)/2,-g/(g-1));
-            T[i] = Tc/(1+M[i]*M[i]*(g-1)/2);
-            V[i] = M[i]*Math.sqrt(g*R*T[i]);
+            M[i] = AMR(area.a[i]/At,g[i],'sub');
+            P[i] = Pc*Math.pow(1+M[i]*M[i]*(g[i]-1)/2,-g[i]/(g[i]-1));
+            T[i] = Tc/(1+M[i]*M[i]*(g[i]-1)/2);
+            V[i] = M[i]*Math.sqrt(g[i]*R[i]*T[i]);
         }
 
     } else {
@@ -441,14 +455,14 @@ function write_vectors(state_info,g,At,E,Lf,type,Pc,Tc,R) {
                 section = 'sup';
             }
             if ((area.x[i] > 0)&&(area.a[i]>AreaShock)) {
-                M[i] = AMR(area.a[i]/At2,g,section);
-                P[i] = P02*Math.pow(1+M[i]*M[i]*(g-1)/2,-g/(g-1));
+                M[i] = AMR(area.a[i]/At2,g[i],section);
+                P[i] = P02*Math.pow(1+M[i]*M[i]*(g[i]-1)/2,-g[i]/(g[i]-1));
             } else {
-                M[i] = AMR(area.a[i]/At,g,section);
-                P[i] = Pc*Math.pow(1+M[i]*M[i]*(g-1)/2,-g/(g-1));
+                M[i] = AMR(area.a[i]/At,g[i],section);
+                P[i] = Pc*Math.pow(1+M[i]*M[i]*(g[i]-1)/2,-g[i]/(g[i]-1));
             }
-            T[i] = Tc/(1+M[i]*M[i]*(g-1)/2);
-            V[i] = M[i]*Math.sqrt(g*R*T[i]);
+            T[i] = Tc/(1+M[i]*M[i]*(g[i]-1)/2);
+            V[i] = M[i]*Math.sqrt(g[i]*R[i]*T[i]);
         }
     }
 
@@ -456,18 +470,18 @@ function write_vectors(state_info,g,At,E,Lf,type,Pc,Tc,R) {
     return result;
 }
 
-export function get_results(g,E,At,P0,Patm,type,Lf,Tc,R,mode) {
+export function get_results(gt,ge,E,At,P0,Patm,type,Lf,Tc,Rt,Re,An,mode) {
     if (!Lf) {
         var Lf = 1;
     }
-    let state = find_state(P0,Patm,g,At,At*E);
-    let vectors = write_vectors(state,g,At,E,Lf,type,P0,Tc,R);
+    let state = find_state(P0,Patm,gt,At,At*E);
+    let vectors = write_vectors(state,gt,ge,At,E,Lf,type,P0,Tc,Rt,Re,An);
     let nozzle_xy = format_data(vectors.x,vectors.r);
     let nozzle_m = format_data(vectors.x,vectors.m);
     let nozzle_p = format_data(vectors.x,vectors.p,1,0.001);
     let nozzle_t = format_data(vectors.x,vectors.t);
     let nozzle_v = format_data(vectors.x,vectors.v);
-    let angles = [0.261799387,0.261799387]
+    let angles = [An*Math.PI/180,An*Math.PI/180]
     if (type == 'bell') {
         angles = bell_angle(E,Lf);
     }
@@ -483,8 +497,8 @@ export function get_results(g,E,At,P0,Patm,type,Lf,Tc,R,mode) {
 
 // main script
 
-let g = 1.4, E = 10, At = 0.05, P0 = 5000000, Patm = 100000, R = 300, Tc = 3000, type = 'conical', Lf = 1;
+let gt = 1.4, ge = 1.2, E = 10, At = 0.05, P0 = 5000000, Patm = 100000, Rt = 600, Re = 300, Tc = 3000, type = 'conical', Lf = 1, An = 15;
 
-let [nozzle_xy, nozzle_m, nozzle_p, nozzle_t, nozzle_v] = get_results(g,E,At,P0,Patm,type,Lf,Tc,R,1);
+let [nozzle_xy, nozzle_m, nozzle_p, nozzle_t, nozzle_v] = get_results(gt,ge,E,At,P0,Patm,type,Lf,Tc,Rt,Re,An,1);
 
 export {nozzle_xy, nozzle_m, nozzle_p, nozzle_t, nozzle_v}

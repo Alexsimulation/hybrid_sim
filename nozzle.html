@@ -286,20 +286,27 @@
                 }
 
                 function update_graph() {
-                    let g = parseFloat(document.getElementById("gamma").value);
+                    let gt = parseFloat(document.getElementById("gamma").value);
+                    let ge = parseFloat(document.getElementById("gammae").value);
                     let At = parseFloat(document.getElementById("at").value);
                     let E = parseFloat(document.getElementById("expan").value);
                     let Pc = parseFloat(document.getElementById("pc").value)*1000;
                     let Patm = parseFloat(document.getElementById("patm").value)*1000;
                     let Tc = parseFloat(document.getElementById("tc").value);
-                    let R = parseFloat(document.getElementById("rg").value);
+                    let Rt = parseFloat(document.getElementById("rg").value);
+                    let Re = parseFloat(document.getElementById("rg").value);
                     let type = document.getElementById("typenoz").value;
                     let Lf = parseFloat(document.getElementById("lf").value);
+                    let An = parseFloat(document.getElementById("an").value);
                     if ((Lf > 1)||(Lf < 0.5)) {
                         Lf = 1;
                         document.getElementById('lf').value = 1;
                     }
-                    let res = get_results(g,E,At,Pc,Patm,type,Lf,Tc,R,1);
+                    if ((An > 45)||(An < 3)) {
+                        An = 15;
+                        document.getElementById('an').value = 15;
+                    }
+                    let res = get_results(gt,ge,E,At,Pc,Patm,type,Lf,Tc,Rt,Re,An,1);
                     ShapeNozzleChart.data.datasets[0].data = res[0];
                     for (var i = 0; i < DataNozzleChart.data.datasets.length; i++) {
                         DataNozzleChart.data.datasets[i].data = res[i+1];
@@ -325,8 +332,12 @@
                         <button class="button" align="left" type="button" id="but1" >Update Graph</button>
                     </tr>
                     <tr>
-                        <td align="right">Specific heat ratio :&nbsp</td>
+                        <td align="right">Specific heat ratio (t):&nbsp</td>
                         <td align="left"><input class="field" id = "gamma" type="number" name="gamma" min=0.01 step = 0.01 value=1.4 /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Specific heat ratio (e):&nbsp</td>
+                        <td align="left"><input class="field" id = "gammae" type="number" name="gammae" min=0.01 step = 0.01 value=1.2 /></td>
                     </tr>
                     <tr>
                         <td align="right">Throat area \(\left(m^2\right)\):&nbsp</td>
@@ -349,8 +360,12 @@
                         <td align="left"><input class="field" id = "tc" type="number" name="tc" min=0.01 step = 10 value=3000 /></td>
                     </tr>
                     <tr>
-                        <td align="right">Gas constant \([J/(kg\cdot K)]\):&nbsp</td>
-                        <td align="left"><input class="field" id = "rg" type="number" name="rg" min=0.01 step = 1 value=300 /></td>
+                        <td align="right">Gas constant (t)\([J/(kg\cdot K)]\):&nbsp</td>
+                        <td align="left"><input class="field" id = "rg" type="number" name="rg" min=0.01 step = 1 value=600 /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Gas constant (e)\([J/(kg\cdot K)]\):&nbsp</td>
+                        <td align="left"><input class="field" id = "rge" type="number" name="rge" min=0.01 step = 1 value=300 /></td>
                     </tr>
                     <tr>
                         <td align="right">Type:&nbsp</td>
@@ -362,6 +377,10 @@
                     <tr id="lf_tr" style="display: none;" >
                         <td align="right">Length fraction:&nbsp</td>
                         <td align="left"><input class="field" id = "lf" type="number" name="lf" min=0.8 max=1 step = 0.01 value=1 /></td>
+                    </tr>
+                    <tr id="an_tr">
+                        <td align="right">Angle \((^\circ)\):&nbsp</td>
+                        <td align="left"><input class="field" id = "an" type="number" name="an" min=5 max=45 step = 0.5 value=15 /></td>
                     </tr>
                     </table>
                 </form>
@@ -376,6 +395,11 @@
                     document.getElementById("lf_tr").style.display = 'table-row';
                 } else {
                     document.getElementById("lf_tr").style.display = 'none';
+                }
+                if (i == 'conical') {
+                    document.getElementById("an_tr").style.display = 'table-row';
+                } else {
+                    document.getElementById("an_tr").style.display = 'none';
                 }
             }
             q2 = document.getElementById("typenoz");
@@ -417,22 +441,28 @@
             function update_codes() {
                 let dw = document.getElementById('datawindow');
                 let pw = document.getElementById('pointswindow');
-                let g = parseFloat(document.getElementById("gamma").value);
+                let gt = parseFloat(document.getElementById("gamma").value);
+                let ge = parseFloat(document.getElementById("gammae").value);
                 let At = parseFloat(document.getElementById("at").value);
                 let E = parseFloat(document.getElementById("expan").value);
                 let Pc = parseFloat(document.getElementById("pc").value)*1000;
                 let Patm = parseFloat(document.getElementById("patm").value)*1000;
                 let Tc = parseFloat(document.getElementById("tc").value);
-                let R = parseFloat(document.getElementById("rg").value);
+                let Rt = parseFloat(document.getElementById("rg").value);
+                let Re = parseFloat(document.getElementById("rge").value);
                 let type = document.getElementById("typenoz").value;
                 let Lf = parseFloat(document.getElementById("lf").value);
-
+                let An = parseFloat(document.getElementById("an").value);
                 if ((Lf > 1)||(Lf < 0.5)) {
                     Lf = 1;
                     document.getElementById('lf').value = 1;
                 }
+                if ((An > 45)||(An < 3)) {
+                    An = 15;
+                    document.getElementById('an').value = 15;
+                }
 
-                let res = get_results(g,E,At,Pc,Patm,type,Lf,Tc,R,2);
+                let res = get_results(gt,ge,E,At,Pc,Patm,type,Lf,Tc,Rt,Re,An,2);
 
                 /* First, results data*/
                 let shape = res[0];
@@ -467,8 +497,8 @@
                 str = str+'Exit Mach: '+M[M.length-1].y+'<br>';
                 str = str+'Exit Pressure: '+P[P.length-1].y+' kPa<br>';
                 let Me = M[M.length-1].y;
-                let Te = Tc*Math.pow(1+Me*Me*(g-1)/2,-1);
-                let Ve = Me*Math.sqrt(g*R*Te);
+                let Te = Tc*Math.pow(1+Me*Me*(ge-1)/2,-1);
+                let Ve = Me*Math.sqrt(ge*Re*Te);
                 str = str+'Exit Velocity: '+Ve+' m/s<br>';
                 str = str+'Exit Temperature: '+Te+' K<br>';
                 str = str+'<br>// Throat //<br>';
@@ -483,7 +513,7 @@
                 let Mt = M[found].y;
                 let Tt = T[found].y;
                 let Vt = V[found].y;
-                let m_dot = (At*Pc/Math.sqrt(Tc))*Math.sqrt(g/R)*Mt*Math.pow(1+Mt*Mt*(g-1)/2,-(g+1)/(2*g-2));
+                let m_dot = (At*Pc/Math.sqrt(Tc))*Math.sqrt(gt/Rt)*Mt*Math.pow(1+Mt*Mt*(gt-1)/2,-(gt+1)/(2*gt-2));
                 if (state[0] != 'subsonic') {
                     str = str+'Throat state: choked<br>';
                 } else {
@@ -495,7 +525,7 @@
                 str = str + 'Throat Velocity: '+Vt+' m/s<br>';
 
                 str = str + '<br>// Thrust Profile //<br>';
-                let Dloss = (1+Math.cos((angles[0]+angles[1])/2))/2;
+                let Dloss = (1+Math.cos(angles[1]))/2;
                 let F = m_dot*Ve*Dloss + (P[P.length-1].y*1000-Patm)*At*E;
                 let ISP = F/(m_dot*9.81);
                 str = str + 'Thrust: '+F/1000+' kN<br>';

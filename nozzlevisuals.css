@@ -154,7 +154,7 @@ body {
     height: 8vh;
     background-color: rgba(120,34,0,1);
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 
 .myskip {
@@ -176,7 +176,8 @@ body {
 
 .mysmallparagraph {
     position: relative;
-    width: 600px;
+    max-width: 600px;
+    min-width: 300px;
     background-color: rgba(0,0,0,0);
     color: white;
     margin: 5%;
@@ -267,4 +268,5 @@ a:hover {
     font-size: 15px;
     padding: 20px;
     padding-left: 5%;
+    overflow: hidden;
 }
