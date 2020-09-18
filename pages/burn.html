@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie-edge">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-        <script type="module" src="/hybrid_sim/pages/scripts/burn.js"></script>
+        <script type="module" src="../pages/scripts/burn.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></link>
         <link rel="stylesheet" href="../pages/styles/burnvisuals.css"></link>
         <link rel="shortcut icon" type="image/x-icon" href="../ressources/icons/fire.ico">
@@ -53,8 +53,8 @@
             </div>
 
             <script type="module">
-                import { get_results } from "/hybrid_sim/pages/scripts/burn.js";
-                import {radius_data, thrust_data, impulse_data, of_data, ISP_data} from "/hybrid_sim/pages/scripts/burn.js";
+                import { get_results } from "../pages/scripts/burn.js";
+                import {radius_data, thrust_data, impulse_data, of_data, ISP_data} from "../pages/scripts/burn.js";
                 Chart.defaults.global.defaultFontColor = 'white';
                 Chart.defaults.global.defaultFontSize = 15;
                 let myChart = document.getElementById('myChart').getContext('2d');
@@ -312,7 +312,7 @@
                 factors used in calculating how fast the solid fuel is burned. The equation involving these factors is explained in the section 
                 <a href="#HowItWorks">How it works</a> below.
             </div>
-            <img src="/hybrid_sim/ressources/motor_drawing.PNG" alt="Motor Measurements" class="image">
+            <img src="../ressources/motor_drawing.PNG" alt="Motor Measurements" class="image">
         </div>
 
         <a id="HowItWorks">
