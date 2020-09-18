@@ -174,7 +174,7 @@ function makeGR(v1,v2,a) {
     let arr2 = makeArr(v1,v2,a.length-i);
     i = 0;
     while (i < arr2.length) {
-        arr2[i] = Math.pow(arr2[i]-arr2[0],2)+arr2[0];
+        arr2[i] = (v2-v1)*(2*Math.pow((arr2[i]-v1)/(v2-v1),2)-Math.pow((arr2[i]-v1)/(v2-v1),4))+v1;
         i = i + 1;
     }
     let arr = arr1.concat(arr2);
@@ -514,8 +514,7 @@ export function get_results(gt,ge,E,At,P0,Patm,type,Lf,Tc,Rt,Re,An,mode) {
 
 // main script
 
-let gt = 1.4, ge = 1.2, E = 10, At = 0.05, P0 = 5000000, Patm = 100000, Rt = 600, Re = 300, Tc = 3000, type = 'conical', Lf = 1, An = 15;
+let gt = 1.4, ge = 1.3, E = 10, At = 0.05, P0 = 5000000, Patm = 100000, Rt = 500, Re = 400, Tc = 3000, type = 'conical', Lf = 1, An = 15;
 
 let [nozzle_xy, nozzle_m, nozzle_p, nozzle_t, nozzle_v] = get_results(gt,ge,E,At,P0,Patm,type,Lf,Tc,Rt,Re,An,1);
-
 export {nozzle_xy, nozzle_m, nozzle_p, nozzle_t, nozzle_v}
