@@ -166,18 +166,25 @@ function makeArr(a,b,n) {
 }
 
 function makeGR(v1,v2,a) {
-    let i = 0;
-    while ((a[i]>a[i+1])&&(i < a.length)) {
-        i = i + 1;
+
+    if (v1 != v2) {
+        var i = 0;
+        while ((a[i]>a[i+1])&&(i < a.length)) {
+            i = i + 1;
+        }
+        
+        let arr1 = makeArr(v1,v1,i);
+        let arr2 = makeArr(v1,v2,a.length-i);
+        i = 0;
+        while (i < arr2.length) {
+            arr2[i] = (v2-v1)*(2*Math.pow((arr2[i]-v1)/(v2-v1),2)-Math.pow((arr2[i]-v1)/(v2-v1),4))+v1;
+            i = i + 1;
+        }
+        var arr = arr1.concat(arr2);
+
+    } else {
+        var arr = makeArr(v1,v2,a.length);
     }
-    let arr1 = makeArr(v1,v1,i);
-    let arr2 = makeArr(v1,v2,a.length-i);
-    i = 0;
-    while (i < arr2.length) {
-        arr2[i] = (v2-v1)*(2*Math.pow((arr2[i]-v1)/(v2-v1),2)-Math.pow((arr2[i]-v1)/(v2-v1),4))+v1;
-        i = i + 1;
-    }
-    let arr = arr1.concat(arr2);
     return arr;
 }
 
