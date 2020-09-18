@@ -511,6 +511,9 @@
                         str = str+'Exhaust state: Normal shock at exit<br>';
                     }
                 } else {
+                    if ((P[P.length-1].y < Patm/1000)&&(state[0] == 'underexpanded')) {
+                        state[0] = 'overexpanded';
+                    }
                     str = str + 'Exhaust state: '+state[0]+'<br>';
                 }
                 str = str+'Exit Mach: '+M[M.length-1].y+'<br>';
