@@ -5,10 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie-edge">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-        <script type="module" src="/pages/scripts/nozzle.js"></script>
+        <script type="module" src="/hybrid_sim/pages/scripts/nozzle.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></link>
-        <link rel="stylesheet" href="/pages/styles/nozzlevisuals.css"></link>
-        <link rel="shortcut icon" type="image/x-icon" href="/ressources/icons/fire.ico">
+        <link rel="stylesheet" href="/hybrid_sim/pages/styles/nozzlevisuals.css"></link>
+        <link rel="shortcut icon" type="image/x-icon" href="/hybrid_sim/ressources/icons/fire.ico">
         <title>hybrid_sim.nozzle</title>
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
         <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -67,8 +67,8 @@
             </div>
 
             <script type="module">
-                import { get_results } from "/pages/scripts/nozzle.js";
-                import {nozzle_xy, nozzle_m, nozzle_p, nozzle_t, nozzle_v} from "/pages/scripts/nozzle.js";
+                import { get_results } from "/hybrid_sim/pages/scripts/nozzle.js";
+                import {nozzle_xy, nozzle_m, nozzle_p, nozzle_t, nozzle_v} from "/hybrid_sim/pages/scripts/nozzle.js";
                 Chart.defaults.global.defaultFontColor = 'white';
                 Chart.defaults.global.defaultFontSize = 15;
 
@@ -444,7 +444,7 @@
         </div>
 
         <script  type="module">
-            import { get_results } from "/pages/scripts/nozzle.js";
+            import { get_results } from "/hybrid_sim/pages/scripts/nozzle.js";
             function update_codes() {
                 let dw = document.getElementById('datawindow');
                 let pw = document.getElementById('pointswindow');
@@ -617,7 +617,7 @@
             nozzle shape are:
             </div>
             <div class="image">
-                <img src="/ressources/nozzle_contour.png" alt="Nozzle schema" class="image">
+                <img src="/hybrid_sim/ressources/nozzle_contour.png" alt="Nozzle schema" class="image">
             </div>
             
         </div>
