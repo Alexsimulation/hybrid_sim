@@ -51,7 +51,7 @@ function get_rho(fuels) {
 export function get_results(L,ri,re,m_dot_ox,propellants,a,n) {
     let rho_fuel = get_rho(propellants);
     let t = 0;
-    let dt = (re-ri)/(a*Math.pow((4*m_dot_ox/(Math.PI*Math.pow((re+ri),2))),n)*200);
+    let dt = (re-ri)/(a*Math.pow((4*m_dot_ox/(Math.PI*Math.pow((re+ri),2))),n)*1000);
     let Gox = m_dot_ox/(Math.PI*ri*ri);
     let r = ri;
     let r_dot = a*Math.pow(Gox,n);
